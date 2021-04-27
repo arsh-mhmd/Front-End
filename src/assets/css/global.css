@@ -1,0 +1,22 @@
+/*全局样式*/
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  /* 阻止屏幕变小发生挤压 */
+  min-width: 1349px;
+}
+a {
+  text-decoration: none;
+}
+.el-breadcrumb {
+  margin-bottom: 15px;
+}
+.el-table {
+  margin-top: 15px;
+}
+.el-pagination {
+  margin-top: 15px;
+}

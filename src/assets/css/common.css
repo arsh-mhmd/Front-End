@@ -1,0 +1,253 @@
+.btn-positive {
+    background-color: #ee4138 ;
+    border-color: #ee4138 ;
+}
+
+.btn-positive.active, .btn-positive.focus, .btn-positive:active, .btn-positive:focus, .btn-positive:hover, .open > .btn-positive.dropdown-toggle {
+    background-color: #ee4138;
+    border-color: #ee4138;
+}
+.user-box .list-info .bd .text-success {
+    color: #ee4138;
+}
+#site-nav a i {
+    color: #ee4138;
+}
+.user-nav > .list li.active a {
+    color: #ee4138;
+}
+.user-box .box-nav li.active a {
+    color: #ee4138;
+}
+.btn-positive.disabled, .btn-positive.disabled.active, .btn-positive.disabled.focus, .btn-positive.disabled:active, .btn-positive.disabled:focus, .btn-positive.disabled:hover, .btn-positive[disabled], .btn-positive[disabled].active, .btn-positive[disabled].focus, .btn-positive[disabled]:active, .btn-positive[disabled]:focus, .btn-positive[disabled]:hover, fieldset[disabled] .btn-positive, fieldset[disabled] .btn-positive.active, fieldset[disabled] .btn-positive.focus, fieldset[disabled] .btn-positive:active, fieldset[disabled] .btn-positive:focus, fieldset[disabled] .btn-positive:hover {
+    background-color: #ee4138 ;
+    border-color: #ee4138;
+}
+
+.btn-positive .badge {
+    color: #ee4138;
+}
+
+.btn-negative {
+    background-color: #ee4138;
+    border-color: #ee4138;
+}
+.user-box .user-order > h3 .order-recycle-link.active {
+    color: #ee4138;
+    border-bottom: 1px dotted #ee4138;
+}
+.btn-negative.disabled, .btn-negative.disabled.active, .btn-negative.disabled.focus, .btn-negative.disabled:active, .btn-negative.disabled:focus, .btn-negative.disabled:hover, .btn-negative[disabled], .btn-negative[disabled].active, .btn-negative[disabled].focus, .btn-negative[disabled]:active, .btn-negative[disabled]:focus, .btn-negative[disabled]:hover, fieldset[disabled] .btn-negative, fieldset[disabled] .btn-negative.active, fieldset[disabled] .btn-negative.focus, fieldset[disabled] .btn-negative:active, fieldset[disabled] .btn-negative:focus, fieldset[disabled] .btn-negative:hover {
+    background-color: #ee4138;
+    border-color: #ee4138;
+}
+.btn-negative .badge {
+    color: #ee4138;
+}
+.btn-link:focus, .btn-link:hover {
+            color: #ee4138;
+        }
+.page > div > a:focus, .page > div > a:hover, .page > div > span:focus, .page > div > span:hover {
+    color: #ee4138;
+}
+
+.page > div > .current, .page > div > .current:focus, .page > div > .current:hover {
+    background-color:#ee4138;
+    border-color: #ee4138;
+}
+
+.label-positive {
+    background-color: #ee4138;
+}
+
+.label-positive[href]:focus, .label-positive[href]:hover {
+    background-color: #ee4138; 
+}
+
+.label-negative {
+    background-color: #ee4138;
+}
+.list-item.active, .list-item.active:focus, .list-item.active:hover {
+    background-color: #ee4138;
+    border-color: #ee4138;
+}
+.thumbnail:hover {
+    border-color: #ee4138;
+}
+
+.thumbnail .caption .btn-sm:hover {
+    border-color: #ee4138;
+    /*color: #ee4138;*/
+}
+.progress-bar, .progress-bar-positive {
+    background-color: #ee4138;
+}
+.progress-bar-negative {
+    background-color: #ee4138;
+}
+ .modal-dialog .modal-body .info .icon.icon-success {
+    color: #ee4138;
+}
+
+.modal-dialog .modal-body .info .icon.icon-error {
+    color: #ee4138;
+}
+.navbar-nav > .active a {
+    color: #ee4138;
+}
+ .nav-category-list .item > a > .icon {
+    color: #ee4138;
+}
+.nav-category-list .item > .sub-list > a {
+    color: #ee4138;
+}
+
+.nav-category-list .item > .sub-list > a:hover {
+    color: #ee4138;
+}
+
+.footer-nav{
+    background: #fff;
+    padding:20px;
+    text-align: right;
+}
+.footer .slde-menu > ul > li > a > .icon {
+    color: #ee4138;
+}
+
+.footer .slde-menu > .slde-box {
+    border: 3px solid #ee4138;
+}
+ .page-wrap .jump-msg .time a {
+    color: #ee4138;
+}
+.list-filter.cate dl dd span.current a {
+    color: #ee4138;
+}
+.list-filter.sort > .dl-horizontal > dd > a.active {
+    color: #ee4138; 
+}
+.item-title h3 .more {
+    background-color: #ee4138
+}
+.item-title h3 .icon-box {
+    border: 1px solid #ee4138;
+}
+
+.item-title h3 .icon-box > .icon {
+    color: #ee4138;
+}
+ .item-pic .hd ul li.on {
+    border: 2px solid #ee4138;
+}
+.item-info > .panel .skubox_lists.attention {
+    border: 2px solid #ee4138;
+}
+.item-info > .panel .sku-box .spec-lists > li.choose > a:hover {
+    border: 2px solid #ee4138;
+}
+.item-info > .panel .sku-box .spec-lists > li.select a {
+    border: 2px solid #ee4138;
+}
+.item-info > .panel .sku-box .spec-lists > li.select span {
+	border-bottom: 8px solid #ee4138;
+	border-right: 8px solid #ee4138;
+}
+.cart-list .item .box > .del:hover {
+    background-color: #ee4138;
+}
+.cart-list .check.active .icon {
+    color: #ee4138;
+} 
+.cart-list .supplier-box dd.supplier-dd .is-self {
+    color: #ee4138;
+}
+.address-item.selected > dl {
+    border-color: #ee4138;
+}
+.address-edit-box {
+    border: 1px solid #ee4138;
+}
+ .address-edit-box .bd .item select:focus {
+    border-color: #ee4138;
+}
+.order-pay-list .selected {
+    border-color: #ee4138;
+}
+.order-pay-list .selected .icon {
+    color: #ee4138;
+}
+.order-pay-extend > .item.selected {
+    background: #ee4138;
+}
+.order-preview .info > h3 > .icon-round-chenggong {
+    color: #ee4138;
+}
+.order-preview .thirdpay .list li.active .icon-round-chenggong:before {
+    color: #ee4138;
+}
+.order-detail-table .column-delivery .order-delivery-status .order-delivery-steps .step.step-now .progress {
+    background: #ee4138;
+}
+.delivery-log > div > p > i.is-new {
+    background-color: #ee4138;
+}
+.order-comment-box .validate-error {
+    color: #ee4138;
+}
+.login-third li .icon-qq, .login-third li .icon-weibo {
+    color: #ee4138;
+}
+.withdraw > .step > ul > li.active:after {
+    background-color: #ee4138
+}
+
+.withdraw > .step > ul > li.active > .icon {
+    color: #ee4138;
+}
+.shop > h3 .title-right-tip a:hover {
+    color: #ee4138;
+    border-bottom: 1px dotted #ee4138;
+}
+a:focus, a:hover {
+    color: #ee4138;
+}
+.text-primary {
+    color: #ee4138;
+}
+
+a.text-primary:hover {
+    color: #ee4138;
+}
+.text-danger {
+    color: #ee4138;
+}
+.pc_index_1x4 ul li span a{
+	color:#ee4138;
+}
+
+
+ .submitComment{
+   padding: 5px 10px;
+    border: 1px solid #333;
+    display: inline-block;
+    margin-top: 10px;
+    cursor: pointer;
+ }   
+
+.none{
+    display: none;
+}
+
+#slider  .bannerA{
+       width: 100%;
+    height:448px;
+    /*background: url(../img/pic4.jpg) no-repeat center center;*/
+    background-size: contain;
+}
+
+#slider  .bannerB{
+    width: 100%;
+    height:448px;
+    /*background: url(../img/pic3.jpg) no-repeat center center;*/
+    background-size: contain;
+}
