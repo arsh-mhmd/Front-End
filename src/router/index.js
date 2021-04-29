@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Login from "../components/Login.vue";
 import MoneyList from "../components/moneyList.vue";
 import ClientsList from "../components/clientsList.vue";
+import NewClient from "../components/newClient.vue";
 import InvoiceList from "../components/invoiceList.vue";
 
 import ManagerPage from "../components/ManagerPage.vue";
@@ -28,6 +29,7 @@ const routes = [
     children: [
       { path: "/moneyList", component: MoneyList },
       { path: "/clientsList", component: ClientsList },
+      { path: "/newClient", component: NewClient },
       { path: "/invoiceList", component: InvoiceList },
     ]
   },

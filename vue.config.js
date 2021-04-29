@@ -2,13 +2,13 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://39.106.160.178:8088/',
+        target: 'http://localhost:8081/',
         changeOrigin: true,
         pathRewrite: {
-          '/api': ''
-        }
+          '^/api': '/InvoiceXR'
+        },
       },
     }
   },
 }
-1
+

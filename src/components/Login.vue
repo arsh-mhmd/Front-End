@@ -39,7 +39,7 @@
           <span>Alrealy a member? Log in</span>
         </el-form-item>
         <el-form-item>
-          <el-button @click="login" type="primary" round>GO</el-button>
+          <el-button @click="login" type="primary" round>Register</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -48,6 +48,7 @@
 
 <script>
 import qs from 'qs';
+import axios from "axios";
 export default {
   data() {
     return {
@@ -72,7 +73,7 @@ export default {
         }
       ],
       //login check rules
-      loginFormRules: {      
+      loginFormRules: {
         user : [
           { required: true, message: "Please input the username", trigger: "blur" },
         ],
@@ -83,11 +84,23 @@ export default {
     };
   },
   created(){
-    
+
   },
   methods: {
     login(){
-      this.$router.push({path: "/moneyList",query: {role: this.loginForm.role}});
+      // this is for register
+      let auth_url =  "/api/oauth/token?grant_type=password&username=admin&password=admin"
+      axios.defaults.headers.common['Authorization'] = "Basic Zm9vQ2xpZW50SWQ6c2VjcmV0"
+      axios.post(auth_url).then(function (response){
+        let token = response.data['access_token']
+        localStorage.setItem('token',token)
+
+        // request register interface
+
+      }).catch(function (error){
+        console.log(error)
+      })
+      //this.$router.push({path: "/moneyList",query: {role: this.loginForm.role}});
     },
   }
 };
@@ -129,7 +142,7 @@ h1{
   transform: translate(-50%);
   width: 80%;
   padding: 0 20px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 /deep/ .el-select{
   width: 100%;
