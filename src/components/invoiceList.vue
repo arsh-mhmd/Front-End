@@ -9,10 +9,10 @@
         <el-button type="primary">Export</el-button>
         <el-button type="primary" plain>Invoice reminders off</el-button>
         <el-input class="searchBox" placeholder="Search" v-model="keyword">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-button @click="search" slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
-     
+
       <el-tabs v-model="activeName">
         <el-tab-pane label="All" name="first">
           <el-table :data="rightsList1" stripe fit>
@@ -119,11 +119,13 @@
 <script>
 import { formatDate } from "@/plugins/date.js";
 import qs from 'qs';
+import axios from "axios";
 export default {
   data() {
     return {
       activeName:'first',
-      rightsList1:[
+      rightsList1 : [],
+      /*rightsList1:[
         {
           number:111,
           ref:'RGB-White',
@@ -278,8 +280,9 @@ export default {
           status:'Draft',
           sent:''
         }
-      ],
-      rightsList2:[
+      ],*/
+      rightsList2:[],
+      /*rightsList2:[
         {
           number:111,
           ref:'RGB-White',
@@ -324,8 +327,9 @@ export default {
           status:'Draft',
           sent:''
         }
-      ],
-      rightsList3:[
+      ],*/
+      rightsList3:[],
+      /*rightsList3:[
         {
           number:111,
           ref:'RGB-White',
@@ -414,7 +418,8 @@ export default {
           status:'Draft',
           sent:''
         }
-      ],
+      ],*/
+/*
       rightsList4:[
         {
           number:111,
@@ -439,7 +444,10 @@ export default {
           sent:''
         }
       ],
-      rightsList5:[
+*/
+      rightsList4:[],
+      rightsList5:[],
+      /*rightsList5:[
         {
           number:111,
           ref:'RGB-White',
@@ -473,8 +481,9 @@ export default {
           status:'Draft',
           sent:''
         }
-      ],
-      rightsList6:[
+      ],*/
+      rightsList6:[],
+      /*rightsList6:[
         {
           number:111,
           ref:'RGB-White',
@@ -497,7 +506,7 @@ export default {
           status:'Draft',
           sent:''
         }
-      ],
+      ],*/
       keyword:''
     };
   },
@@ -508,8 +517,67 @@ export default {
     },
   },
   created() {
+    let _this = this
+    axios.defaults.headers.common['Authorization'] = "Bearer "+localStorage.getItem('token')
+    axios.get('/api/getAllInvoices').then(function (response){
+      if(JSON.stringify(response)!== '{}'){
+        localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
+
+      }
+    }).catch(function (error){
+
+    })
   },
   methods: {
+    search(){
+      this.rightsList1 = []
+      this.rightsList2 = []
+      this.rightsList3 = []
+      this.rightsList4 = []
+      this.rightsList5 = []
+      this.rightsList6 = []
+      let count2 =0
+      let count3 =0
+      let count4 =0
+      let count5 =0
+      let count6 =0
+        let arr = JSON.parse(localStorage.getItem("allInvoiceList"))
+      for(let key in arr){
+        let ob = {}
+        ob.number = arr[key].invoiceNo
+        ob.ref = arr[key].address.shippingFirstName+' '+arr[key].address.shippingLastName
+        ob.to = arr[key].address.billingFirstName+' '+arr[key].address.billingLastName
+        ob.date = arr[key].invoiceDate
+        ob.dueDate = arr[key].dueDate
+        ob.paid = arr[key].paid
+        ob.due = arr[key].dueAmount
+        ob.status = arr[key].status
+        ob.sent = ''
+        this.rightsList1[key] = ob
+
+        if(arr[key].status === 'Draft'){
+          this.rightsList2[count2] = ob
+          count2+=1
+        }else if(arr[key].status === 'Awaiting Approve'){
+          this.rightsList3[count3] = ob
+          count3+=1
+        }
+        else if(arr[key].status === 'Awaiting Payment'){
+          this.rightsList4[count4] = ob
+          count4+=1
+        }
+        else if(arr[key].status === 'Paid'){
+          this.rightsList5[count5] = ob
+          count5+=1
+        }
+        else if(arr[key].status === 'Repeating'){
+          this.rightsList6[count6] = ob
+          count6+=1
+        }
+      }
+
+
+    }
   },
 };
 </script>

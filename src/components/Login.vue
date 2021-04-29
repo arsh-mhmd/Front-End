@@ -30,7 +30,7 @@
               v-for="item in options"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
+              :value="item.label">
             </el-option>
           </el-select>
         </el-form-item>
@@ -86,9 +86,16 @@ export default {
   created(){
 
   },
+  computed:{
+
+  },
   methods: {
     login(){
-      // this is for register
+      this.$router.push({path: "/moneyList"});
+
+
+      const _that =this
+      //this is for register
       let auth_url =  "/api/oauth/token?grant_type=password&username=admin&password=admin"
       axios.defaults.headers.common['Authorization'] = "Basic Zm9vQ2xpZW50SWQ6c2VjcmV0"
       axios.post(auth_url).then(function (response){
@@ -96,11 +103,19 @@ export default {
         localStorage.setItem('token',token)
 
         // request register interface
+        let createClient = {'userName':_that.loginForm.user,'password':_that.loginForm.pass,'role':_that.loginForm.role}
+        axios.defaults.headers.common['Authorization'] = "Bearer "+token
+        axios.post('/api/ownerMod/createUser',createClient).then(function (response){
+          // this function should appear in log in page
 
+        }).catch(function (error){
+          console.log(error)
+        })
       }).catch(function (error){
         console.log(error)
       })
-      //this.$router.push({path: "/moneyList",query: {role: this.loginForm.role}});
+
+
     },
   }
 };
