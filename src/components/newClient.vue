@@ -60,6 +60,7 @@
 
 <script>
 import { formatDate } from "@/plugins/date.js";
+import axios from "axios";
 import qs from 'qs';
 export default {
   data() {
@@ -78,7 +79,22 @@ export default {
   },
   methods: {
     submit(){
-      
+      const _that =this
+      let token = localStorage.getItem('token')
+      // request register interface
+      let createClient = {'clientName':_that.form.name,'industry':_that.form.num,'contactNo':_that.form.postcode}
+      axios.defaults.headers.common['Authorization'] = "Bearer "+token
+      axios.post('/api/registerClient',createClient).then(function (response){
+        // this function should appear in log in pag
+        console.log(response)
+        if (response.status == 201){
+          alert("Client Register Success");
+        } else {
+          alert("Fail, Error: "+ response.status);
+        }
+      }).catch(function (error){
+        console.log(error)
+      })
     },
   },
 };
