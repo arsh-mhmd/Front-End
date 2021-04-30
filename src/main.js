@@ -1,11 +1,10 @@
 import Vue from "vue";
-import App from "./App.vue";
+import App from "./App.vue"; 
 import router from "./router";
 import "./plugins/element.js";
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
-
-import VueResource from 'vue-resource'
+// import VueResource from 'vue-resource'
 // Vue.use(VueResource)
 // Import global styles
 import "./assets/css/global.css";
@@ -20,7 +19,6 @@ Router.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error=> error)
 }
 import axios from "axios";
-Vue.prototype.$ajax = axios
 //Configure request root path
 axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? '' : '';
 //Set up a request interceptor before mounting to the prototype object, and use use to mount a callback function

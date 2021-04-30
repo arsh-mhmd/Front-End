@@ -15,6 +15,12 @@
               v-model="form.name"
             ></el-input>
           </el-form-item>
+          <el-form-item label="Email" prop="mail">
+            <el-input
+              placeholder="mail"
+              v-model="form.mail"
+            ></el-input>
+          </el-form-item>
           <h5>Address information</h5>
           <el-form-item label="Room number" prop="num">
             <el-input
@@ -81,11 +87,9 @@ export default {
     submit(){
       const _that =this
       let token = localStorage.getItem('token')
-      // request register interface
       let createClient = {'clientName':_that.form.name,'industry':_that.form.num,'contactNo':_that.form.postcode}
       axios.defaults.headers.common['Authorization'] = "Bearer "+token
       axios.post('/api/registerClient',createClient).then(function (response){
-        // this function should appear in log in pag
         console.log(response)
         if (response.status == 201){
           alert("Client Register Success");

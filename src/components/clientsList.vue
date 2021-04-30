@@ -7,7 +7,7 @@
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
-
+     
       <el-table :data="rightsList" stripe fit>
         <el-table-column label="Name" prop="name"></el-table-column>
         <el-table-column label="Room number" prop="num"></el-table-column>
@@ -25,7 +25,6 @@
 <script>
 import { formatDate } from "@/plugins/date.js";
 import qs from 'qs';
-import axios from "axios";
 export default {
   data() {
     return {
@@ -71,12 +70,11 @@ export default {
   },
   filters: {
     formatDate(time) {
-      let date = new Date(time);
+      var date = new Date(time);
       return formatDate(date, "yyyy-MM-dd");
     },
   },
   created() {
-
   },
   methods: {
     goNewClient(){
