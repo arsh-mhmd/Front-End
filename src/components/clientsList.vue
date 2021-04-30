@@ -7,12 +7,12 @@
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
-     
+
       <el-table :data="rightsList" stripe fit>
-        <el-table-column label="Name" prop="name"></el-table-column>
-        <el-table-column label="Room number" prop="num"></el-table-column>
-        <el-table-column label="Street" prop="street"></el-table-column>
-        <el-table-column label="Postcode" prop="postcode"></el-table-column>
+        <el-table-column label="Name" prop="clientName"></el-table-column>
+        <el-table-column label="Room number" prop="industry"></el-table-column>
+        <el-table-column label="industry" prop="industry"></el-table-column>
+        <el-table-column label="contactNo" prop="contactNo"></el-table-column>
         <div slot="empty" class="emptyBg">
           <p>No data</p>
         </div>
@@ -25,44 +25,20 @@
 <script>
 import { formatDate } from "@/plugins/date.js";
 import qs from 'qs';
+import axios from "axios";
 export default {
   data() {
     return {
       rightsList:[
         {
-          name:'Tom',
-          num:12,
-          street:'Boom FM',
-          Postcode:'Draft',
-          postcode:'abc'
+          clientName:'Tom',
+          industry:'Boom FM',
+          contactNo:'Draft',
         },
         {
-          name:'Tom',
-          num:12,
-          street:'Boom FM',
-          Postcode:'Draft',
-          postcode:'abc'
-        },
-        {
-          name:'Tom',
-          num:12,
-          street:'Boom FM',
-          Postcode:'Draft',
-          postcode:'abc'
-        },
-        {
-          name:'Tom',
-          num:12,
-          street:'Boom FM',
-          Postcode:'Draft',
-          postcode:'abc'
-        },
-        {
-          name:'Tom',
-          num:12,
-          street:'Boom FM',
-          Postcode:'Draft',
-          postcode:'abc'
+          clientName:'Tom',
+          industry:12,
+          contactNo:'Boom FM',
         },
       ],
       keyword:''
@@ -75,6 +51,15 @@ export default {
     },
   },
   created() {
+    let _that = this;
+    let token = localStorage.getItem('token')
+    axios.defaults.headers.common['Authorization'] = "Bearer "+token
+    axios.get('/api/showAllClient').then(function (response){
+      console.log(response)
+      _that.rightsList = response.data;
+    }).catch(function (error){
+      console.log(error)
+    })
   },
   methods: {
     goNewClient(){
