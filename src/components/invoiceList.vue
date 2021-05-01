@@ -12,7 +12,7 @@
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
-     
+
       <el-tabs v-model="activeName">
         <el-tab-pane label="All" name="first">
           <el-table :data="rightsList1" stripe fit >
@@ -154,6 +154,7 @@
 
 <script>
 import { formatDate } from "@/plugins/date.js";
+import axios from "axios";
 import qs from 'qs';
 export default {
   data() {
@@ -547,15 +548,74 @@ export default {
     },
   },
   created() {
+    let _this = this
+    axios.defaults.headers.common['Authorization'] = "Bearer "+localStorage.getItem('token')
+    axios.get('/api/getAllInvoices').then(function (response){
+      if(JSON.stringify(response)!== '{}'){
+        localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
+
+      }
+    }).catch(function (error){
+
+    })
+
   },
   methods: {
+    search(){
+      this.rightsList1 = []
+      this.rightsList2 = []
+      this.rightsList3 = []
+      this.rightsList4 = []
+      this.rightsList5 = []
+      this.rightsList6 = []
+      let count2 =0
+      let count3 =0
+      let count4 =0
+      let count5 =0
+      let count6 =0
+      let arr = JSON.parse(localStorage.getItem("allInvoiceList"))
+      for(let key in arr){
+        let ob = {}
+        ob.number = arr[key].invoiceNo
+        ob.ref = arr[key].address.shippingFirstName+' '+arr[key].address.shippingLastName
+        ob.to = arr[key].address.billingFirstName+' '+arr[key].address.billingLastName
+        ob.date = arr[key].invoiceDate
+        ob.dueDate = arr[key].dueDate
+        ob.paid = arr[key].paid
+        ob.due = arr[key].dueAmount
+        ob.status = arr[key].status
+        ob.sent = ''
+        this.rightsList1[key] = ob
+
+        if(arr[key].status === 'Draft'){
+          this.rightsList2[count2] = ob
+          count2+=1
+        }else if(arr[key].status === 'Awaiting Approve'){
+          this.rightsList3[count3] = ob
+          count3+=1
+        }
+        else if(arr[key].status === 'Awaiting Payment'){
+          this.rightsList4[count4] = ob
+          count4+=1
+        }
+        else if(arr[key].status === 'Paid'){
+          this.rightsList5[count5] = ob
+          count5+=1
+        }
+        else if(arr[key].status === 'Repeating'){
+          this.rightsList6[count6] = ob
+          count6+=1
+        }
+      }
+    },
+
     handleNewInvoice(){
       this.$router.push({path: "/newInvoice"});
     },
     handleNewClient(){
       this.$router.push({path: "/newClient"});
     },
-     getCurrentRow(row){ 
+     getCurrentRow(row){
         this.templateSelection = row
     },
     handleSend(){
