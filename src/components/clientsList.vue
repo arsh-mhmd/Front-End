@@ -3,16 +3,27 @@
     <el-card>
       <div class="top">
         <el-button @click="goNewClient" type="primary">New Client</el-button>
+        <el-button @click="editClient" type="primary">Edit Client</el-button>
+        <el-button @click="deleteClient" type="primary">Delete Client</el-button>
         <el-input class="searchBox" placeholder="Search" v-model="keyword">
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
 
       <el-table :data="rightsList" stripe fit>
-        <el-table-column label="Name" prop="clientName"></el-table-column>
-        <el-table-column label="Room number" prop="industry"></el-table-column>
-        <el-table-column label="industry" prop="industry"></el-table-column>
-        <el-table-column label="contactNo" prop="contactNo"></el-table-column>
+        <el-table-column label="Selection" align="center" width="100">
+          <template scope="scope">
+            <el-radio :label="scope.$index+1" v-model="radio"
+                      @change.native="getCurrentRow(scope.row)"></el-radio>
+          </template>
+        </el-table-column>
+        <el-table-column label="FirstName" prop="firstName"></el-table-column>
+        <el-table-column label="LastName" prop="lastName"></el-table-column>
+        <el-table-column label="Email" prop="email"></el-table-column>
+        <el-table-column label="StreetName" prop="streetName"></el-table-column>
+        <el-table-column label="PostalCode" prop="postalCode"></el-table-column>
+        <el-table-column label="Town" prop="town"></el-table-column>
+        <el-table-column label="Country" prop="country"></el-table-column>
         <div slot="empty" class="emptyBg">
           <p>No data</p>
         </div>
@@ -31,16 +42,26 @@ export default {
     return {
       rightsList:[
         {
-          clientName:'Tom',
-          industry:'Boom FM',
-          contactNo:'Draft',
+          firstName: "John",
+          lastName: "Smith",
+          email:'sdfsd@435.com',
+          streetName: "2 Court Square",
+          postalCode: "NY 12210",
+          town: "New York",
+          country: "USA",
         },
         {
-          clientName:'Tom',
-          industry:12,
-          contactNo:'Boom FM',
+          firstName: "222",
+          lastName: "333",
+          email:'sdfsd@435.com',
+          streetName: "456 Square",
+          postalCode: "NK 34534",
+          town: "England",
+          country: "OK",
         },
       ],
+      templateSelection:{},
+      radio:'',
       keyword:''
     };
   },
@@ -62,8 +83,17 @@ export default {
     })
   },
   methods: {
+    getCurrentRow(row){
+      this.templateSelection = row
+      console.log(row)
+      console.log(this.radio)
+    },
     goNewClient(){
       this.$router.push({path: "/newClient"});
+    },
+    editClient(){
+    },
+    deleteClient(){
     },
   },
 };
