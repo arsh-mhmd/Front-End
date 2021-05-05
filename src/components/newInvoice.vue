@@ -9,6 +9,37 @@
           class="login_form"
           :model="form"
         >
+          <!--client sletor-->
+          <el-row>
+            <el-col :span='9'>
+              <el-form-item label="Billing">
+                <el-select v-model="form.billing" placeholder="billing to">
+                  <el-option
+                    v-for="(item, index) in clientList"
+                    :key="index"
+                    :label="item.firstName + ' ' + item.lastName"
+                    :value="index">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span='9'>
+              <el-form-item label="Shipping">
+                <el-select v-model="form.shipping" placeholder="shipping to">
+                  <el-option
+                    v-for="(item, index) in clientList"
+                    :key="index"
+                    :label="item.firstName + ' ' + item.lastName"
+                    :value="index">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span='6'>
+              <el-button>New Client</el-button>
+            </el-col>
+          </el-row>
+          <!--selector-->
           <el-row>
             <el-col :span='9'>
               <el-form-item label="Date" prop="date">
@@ -29,37 +60,6 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <!--client sletor-->
-          <el-row>
-            <el-col :span='9'>
-              <el-form-item label="Billing" prop="billing">
-                <el-select v-model="form.billing" prop="billing" placeholder="billing to">
-                  <el-option
-                    v-for="item in clientList"
-                    :key="item.value"
-                    :label="item.firstName + ' ' + item.lastName"
-                    :value="item">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span='9'>
-              <el-form-item label="Shipping" prop="shipping">
-                <el-select v-model="form.shipping" prop="shipping" placeholder="shipping to">
-                  <el-option
-                    v-for="item in clientList"
-                    :key="item.value"
-                    :label="item.firstName + ' ' + item.lastName"
-                    :value="item">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span='6'>
-              <el-button>New Client</el-button>
-            </el-col>
-          </el-row>
-          <!--selector-->
           <el-form-item label="CompanyName" prop="companyname">
             <el-input
               placeholder="CompanyName"
@@ -134,7 +134,7 @@
               </el-form-item>
             </el-col>
             <el-col :span='6'>
-              <el-form-item label="Total Mount">
+              <el-form-item label="Total Need to Pay">
                 <span style="width: 150px">
                   {{totalMount}}
                 </span>
@@ -186,6 +186,11 @@
             </template>
           </el-table-column>
         </el-table>
+          <el-form-item label="">
+            <el-button @click="submit()" type="primary" >Submit</el-button>
+            <el-button @click="cancel()" type="primary" >Cancel</el-button>
+          </el-form-item>
+
 
       <el-dialog Title="Entity" :visible.sync="itemwindowvisible" width="1000px">
         <el-row>
@@ -229,6 +234,7 @@
 <script>
 import { formatDate } from "@/plugins/date.js";
 import qs from 'qs';
+import axios from "axios";
 export default {
   data() {
     return {
@@ -310,8 +316,59 @@ export default {
     })
   },
   methods: {
-    submit(){
-
+    submit() {
+      const _that = this
+      let token = localStorage.getItem('token')
+      let billindex = _that.form.billing
+      let shipindex = _that.form.shipping
+      let newInvoice = {
+        "invoiceDate": _that.form.date,
+        "dueDate": _that.form.dueDate,
+        "userId": "qwerty",
+        "companyName": _that.form.companyname,
+        "companyStreetName": _that.form.companystreetname,
+        "companyPostalCode": _that.form.companypostalcode,
+        "companyTown": _that.form.companytown,
+        "companyCountry": _that.form.companycountry,
+        "status": _that.form.status,
+        "address": {
+          "billingFirstName": _that.clientList[billindex].firstName,
+          "billingLastName": _that.clientList[billindex].lastName,
+          "billingStreetName": _that.clientList[billindex].streetName,
+          "billingPostalCode": _that.clientList[billindex].postalCode,
+          "billingTown": _that.clientList[billindex].town,
+          "billingCountry": _that.clientList[billindex].country,
+          "shippingFirstName": _that.clientList[shipindex].firstName,
+          "shippingLastName": _that.clientList[shipindex].lastName,
+          "shippingStreetName": _that.clientList[shipindex].streetName,
+          "shippingPostalCode": _that.clientList[shipindex].postalCode,
+          "shippingTown": _that.clientList[shipindex].town,
+          "shippingCountry": _that.clientList[shipindex].country,
+          "salesTax": _that.form.salestax,
+          "entries": _that.entityList
+        }
+      }
+      console.log(newInvoice)
+      axios.post('/api/registerClient', newInvoice, {
+        headers:{
+          'Authorization':"Bearer " + token,
+          'content-type': 'application/json'
+        }
+      }).then(function (response) {
+        console.log(response)
+        if (response.status == 201) {
+          alert("Client Register Success");
+        } else {
+          alert("Fail, Error: " + response.status);
+        }
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    cancel(){
+      let _that = this
+      console.log(_that.form.billing)
+      console.log(_that.form.shipping)
     },
     newEntity(){
       let _that = this
