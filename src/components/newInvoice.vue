@@ -349,7 +349,7 @@ export default {
         }
       }
       console.log(newInvoice)
-      axios.post('/api/registerClient', newInvoice, {
+      axios.post('/api/createInvoice', newInvoice, {
         headers:{
           'Authorization':"Bearer " + token,
           'content-type': 'application/json'
@@ -358,6 +358,7 @@ export default {
         console.log(response)
         if (response.status == 201) {
           alert("Client Register Success");
+          console.log(response);
         } else {
           alert("Fail, Error: " + response.status);
         }
