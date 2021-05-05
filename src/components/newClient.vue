@@ -99,9 +99,9 @@ export default {
     submit(){
       const _that =this
       let token = localStorage.getItem('token')
-      let createClient = {'clientName':_that.form.firstname,'industry':_that.form.lastname,'contactNo':_that.form.postcode}
-      // let createClient = {'firstName':_that.form.firstName,'lastName':_that.form.lastName,'email':_that.form.email,
-      //   'streetName':_that.form.streetName,'postalCode':_that.form.postalCode,'town':_that.form.town,'country':_that.form.country}
+      // let createClient = {'clientName':_that.form.firstname,'industry':_that.form.lastname,'contactNo':_that.form.postcode}
+      let createClient = {'firstName':_that.form.firstName,'lastName':_that.form.lastName,'email':_that.form.email,
+        'streetName':_that.form.streetName,'postalCode':_that.form.postalCode,'town':_that.form.town,'country':_that.form.country}
       axios.defaults.headers.common['Authorization'] = "Bearer "+token
       axios.post('/api/registerClient',createClient).then(function (response){
         console.log(response)

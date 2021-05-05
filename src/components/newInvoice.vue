@@ -36,7 +36,7 @@
               </el-form-item>
             </el-col>
             <el-col :span='6'>
-              <el-button>New Client</el-button>
+              <el-button @click="newClient()">New Client</el-button>
             </el-col>
           </el-row>
           <!--selector-->
@@ -314,6 +314,14 @@ export default {
     _that.entityList.forEach((item)=>{
       _that.totalMount += item.price * item.quantity
     })
+    let token = localStorage.getItem('token')
+    axios.defaults.headers.common['Authorization'] = "Bearer "+token
+    axios.get('/api/showAllClient').then(function (response){
+      console.log(response)
+      _that.clientList = response.data;
+    }).catch(function (error){
+      console.log(error)
+    })
   },
   methods: {
     submit() {
@@ -413,6 +421,9 @@ export default {
       _that.entityList.forEach((item)=>{
         _that.totalMount += item.price * item.quantity
       })
+    },
+    newClient(){
+      this.$router.push({path: "/ClientsList"});
     }
   },
 };
