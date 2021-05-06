@@ -9,6 +9,7 @@ import NewInvoice from "../components/newInvoice.vue";
 import InvoiceList from "../components/invoiceList.vue";
 import ManagerList from "../components/managerList.vue";
 import NewManager from "../components/newManager.vue";
+import UserProfile from "../components/userProfile.vue";
 
 import ManagerPage from "../components/ManagerPage.vue";
 
@@ -39,6 +40,7 @@ const routes = [
       { path: "/invoiceList", component: InvoiceList },
       { path: "/managerList", component: ManagerList },
       { path: "/newManager", component: NewManager },
+      { path: "/userProfile", component: UserProfile },
     ]
   },
 ];

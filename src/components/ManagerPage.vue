@@ -81,6 +81,7 @@ export default {
           authName: "Manage Users",
           children: [
           { id: "01", authName: "Manage Users", path: "managerList" },
+          { id: "02", authName: "Profile", path: "userProfile" },
           ]
         },
       ],

@@ -96,7 +96,7 @@ export default {
       axios.post(auth_url).then(function (response){
         let token = response.data['access_token']
         localStorage.setItem('token',token)
-        
+        localStorage.setItem('loginUser',_that.loginForm.user)
         // request register interface
       }).catch(function (error){
         console.log(error)
