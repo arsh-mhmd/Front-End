@@ -5,6 +5,7 @@
         <el-button @click="handleNewInvoice()" type="primary">New Invoice</el-button>
         <el-button @click="getPDF()" type="primary">Get PDF</el-button>
         <el-button @click="sendEmail()" type="primary">Send E-mail</el-button>
+        <el-button @click="deleteInvoice()" type="primary" v-bind:disabled="deleteable">Delete</el-button>
       </div>
 
       <el-tabs v-model="activeName">
@@ -129,8 +130,28 @@
           </el-table>
         </el-tab-pane>
       </el-tabs>
-
     </el-card>
+<!--    dialog-->
+    <el-dialog title="Send E-mail" :visible.sync="emailwindowvisible" width="800px">
+      <title>Send E-mail</title>
+      <el-row>
+        <template>
+          <el-radio-group v-model="mailmode">
+            <el-radio :label="1">Send Now</el-radio>
+            <el-radio :label="2">Send Every Month</el-radio>
+            <el-radio :label="3">Send Days BY Due</el-radio>
+          </el-radio-group>
+        </template>
+      <el-input
+        placeholder="How Manys days by Due"
+        v-model="mailsenddate"
+        style="width: 150px; margin: 50px"
+      ></el-input>
+        </el-row>
+        <el-button @click="confirmemail()" type="primary" plain>Confirm</el-button>
+        <el-button @click="emailwindowvisible = false" type="primary" plain>Cancel</el-button>
+    </el-dialog>
+<!--    dialog-->
   </div>
 </template>
 
@@ -195,7 +216,11 @@ export default {
       searchStatus:'4',
       searchname:'',
       searchdateS:'',
-      searchdateE:''
+      searchdateE:'',
+      emailwindowvisible:false,
+      mailmode:'',
+      mailsenddate:'',
+      deleteable:false
     };
   },
   filters: {
@@ -206,6 +231,11 @@ export default {
   },
   created() {
     let _that = this
+    let role = localStorage.getItem('role')
+    if(role != 0){
+      _that.deleteable = true
+    }
+    console.log(_that.deleteable)
     axios.defaults.headers.common['Authorization'] = "Bearer "+localStorage.getItem('token')
     axios.get('/api/getAllInvoices').then(function (response){
       if(JSON.stringify(response)!== '{}'){
@@ -227,11 +257,18 @@ export default {
     },
     searchBydata(){
     },
+    deleteInvoice(){
+      let role = localStorage.getItem('role')
+      console.log(role)
+    },
+    confirmemail(){
+      let _that = this
+      console.log(_that.mailmode)
+      console.log(_that.mailsenddate)
+      _that.emailwindowvisible = false
+    },
     handleNewInvoice(){
       this.$router.push({path: "/newInvoice"});
-    },
-    handleNewClient(){
-      this.$router.push({path: "/newClient"});
     },
      getCurrentRow(row){
         this.templateSelection = row
@@ -244,7 +281,10 @@ export default {
       });
     },
     getPDF(){},
-    sendEmail(){}
+    sendEmail(){
+      let _that = this;
+      _that.emailwindowvisible = true
+    }
   },
 };
 </script>

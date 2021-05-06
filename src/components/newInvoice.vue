@@ -36,7 +36,7 @@
               </el-form-item>
             </el-col>
             <el-col :span='6'>
-              <el-button @click="newClient()">New Client</el-button>
+              <el-button @click="manageClient()">Manage Client</el-button>
             </el-col>
           </el-row>
           <!--selector-->
@@ -422,7 +422,7 @@ export default {
         _that.totalMount += item.price * item.quantity
       })
     },
-    newClient(){
+    manageClient(){
       this.$router.push({path: "/ClientsList"});
     }
   },

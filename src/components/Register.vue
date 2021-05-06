@@ -66,10 +66,6 @@ export default {
         {
           value:'1',
           label:'Manager'
-        },
-        {
-          value:'2',
-          label:'Activate'
         }
       ],
       //login check rules
@@ -88,7 +84,6 @@ export default {
   },
   methods: {
     login(){
-      this.$router.push({path: "/moneyList",query: {role: this.loginForm.role}});
       const _that =this
       //this is for register
       let auth_url =  "/api/oauth/token?grant_type=password&username=admin&password=admin"
@@ -109,6 +104,8 @@ export default {
       }).catch(function (error){
         console.log(error)
       })
+      localStorage.setItem('role',_that.loginForm.role)
+      this.$router.push({path: "/moneyList"});
     },
     goLogin(){
       this.$router.push({path: "/"});
