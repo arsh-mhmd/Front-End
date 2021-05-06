@@ -26,40 +26,26 @@
           </el-form-item>
           <el-form-item label="Password" prop="password">
             <el-input
+            :disabled="this.disabledPassword"
               placeholder="password"
               v-model="form.password"
             ></el-input>
           </el-form-item>
           <el-form-item id = "final" label="Enter Password to Verify" prop="repassword">
             <el-input
-             :disabled = isDisabled
+             :disabled="this.disabled"
               placeholder="password"
               v-model="form.repassword"
             ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button @click="save" type="primary" round>Save</el-button>
+            <el-button @click="changePassword" type="primary" round>Change Password</el-button>
             <el-button @click="verifyPassword" type="primary" round
-              >Verify Password</el-button
-            >
+              >Verify Password</el-button>
           </el-form-item>
         </el-form>
       </div>
-      <!-- <el-row>
-        <el-col :span="12">
-           <div class="box">
-             <h1>Register a new client:</h1>
-             <el-button>Name</el-button>
-             <el-button>Industry</el-button>
-           </div>
-        </el-col>
-        <el-col :span="12">
-           <div class="box">
-             <h1>Select existing client:</h1>
-             <el-button>Client's Name</el-button>
-           </div>
-        </el-col>
-      </el-row> -->
     </el-card>
   </div>
 </template>
@@ -67,10 +53,11 @@
 <script>
 import { formatDate } from "@/plugins/date.js";
 import axios from "axios";
-import qs from "qs";
 export default {
   data() {
     return {
+      disabled: true,
+      disabledPassword:true,
       form: {},
     };
   },
@@ -86,7 +73,6 @@ export default {
     if (role != 0) {
       _that.deleteable = true;
     }
-    // _that.isChangePassword = true;
     _that.isDisabled = false;
     localStorage.setItem("voiceChangeFlag", "-1");
     console.log(_that.deleteable);
@@ -99,9 +85,7 @@ export default {
       )
       .then(function (response) {
         if (JSON.stringify(response) !== "{}") {
-          //localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
           console.log(response.data);
-          // _that.formRef.reset();
           _that.$set(_that.form, "firstName", response.data.firstName);
           _that.$set(_that.form, "lastName", response.data.lastName);
           _that.$set(_that.form, "email", response.data.email);
@@ -112,10 +96,11 @@ export default {
       .catch(function (error) {});
   },
   methods: {
+
     save() {
       const _that = this;
+      _that.disabledPassword=false;
       let token = localStorage.getItem("token");
-      // _that.isChangePassword=true
       let createClient = {
         firstName: _that.form.firstName,
         lastName: _that.form.lastName,
@@ -130,6 +115,7 @@ export default {
         .then(function (response) {
           console.log(response);
           if (response.status == 200) {
+             _that.disabledPassword=true;
             alert("Profile Update Success");
             _that.$set(_that.form, "firstName", response.data.firstName);
           _that.$set(_that.form, "lastName", response.data.lastName);
@@ -145,6 +131,10 @@ export default {
           console.log(error);
         });
     },
+
+    changePassword() {
+      this.disabled=false;
+  },
 
     verifyPassword() {
       const _that = this;
@@ -163,9 +153,10 @@ export default {
           console.log(response);
           if (response.data == true) {
             alert("Password Verification Success");
-            // _that.isDisabled = true;
-            // _that.form["__ob__"].dep.subs[6].vm._self.$options.propsData.label="new"; 
+            _that.disabled=true;
+            _that.disabledPassword=false;
             _that.$set(_that.form, "password", "");
+            _that.$set(_that.form, "repassword", "");
           } else {
             alert("Fail, Error: " + response.data);
           }
