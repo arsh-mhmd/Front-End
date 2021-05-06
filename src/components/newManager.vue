@@ -2,6 +2,7 @@
   <div>
     <el-card>
       <div class="login_box">
+        <el-button @click="goBack" type="primary">Go Back</el-button>
         <h1>Invoice Management System</h1>
         <el-form
           ref="formRef"
@@ -106,6 +107,9 @@ export default {
       } else {
         alert("Password Mismatch");
       }
+    },
+    goBack() {
+        this.$router.push({path: "/managerList"});
     },
   },
 };
