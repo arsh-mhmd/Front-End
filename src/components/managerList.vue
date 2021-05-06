@@ -69,6 +69,30 @@ export default {
       this.$router.push({path: "/newManager"});
     },
     deleteManager(){
+      console.log(this.templateSelection.id)
+      let _that = this;
+    let token = localStorage.getItem('token')
+    axios.defaults.headers.common['Authorization'] = "Bearer "+token
+    const deleteRequest = axios.delete('/api/ownerMod/removeInvoiceUserById?id='+this.templateSelection.id);
+    const fetchRequest = axios.get('/api/ownerMod/getManagers');
+
+    axios
+  .all([deleteRequest, fetchRequest])
+  .then(
+    axios.spread((...responses) => {
+      const deleteResponse = responses[0];
+      const fetchResponse = responses[1];
+    _that.rightsList = [];  
+    _that.rightsList = fetchResponse.data;
+
+      // use/access the results
+      console.log(deleteResponse, fetchResponse);
+    })
+  )
+  .catch(errors => {
+    // react on errors.
+    console.error(errors);
+  });
     },
   },
 };
