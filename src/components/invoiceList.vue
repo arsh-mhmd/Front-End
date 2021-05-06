@@ -265,8 +265,8 @@ export default {
     },
     editInvoice(){
       let _that = this
-      // localStorage.setItem('voiceChangeFlag',_that.templateSelection.invoiceId)
-      localStorage.setItem('voiceChangeFlag','2')
+      localStorage.setItem('voiceChangeFlag',_that.templateSelection.invoiceId)
+      // localStorage.setItem('invoiceChangeFlag','2')
       _that.$router.push({path: "/newInvoice"});
     },
     confirmemail(){

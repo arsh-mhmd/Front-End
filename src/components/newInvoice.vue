@@ -300,7 +300,6 @@ export default {
         index:""
       },
       totalMount:"",
-      invoiceid:""
     };
   },
   filters: {
@@ -311,7 +310,6 @@ export default {
   },
   created() {
     let _that = this
-    console.log("2333")
     let token = localStorage.getItem('token')
     axios.defaults.headers.common['Authorization'] = "Bearer "+token
     axios.get('/api/showAllClient').then(function (response){
@@ -320,13 +318,13 @@ export default {
     }).catch(function (error){
       console.log(error)
     })
-    let voiceFlag = localStorage.getItem('voiceChangeFlag')
-    console.log(voiceFlag)
-    if (voiceFlag != '-1'){
+    let invoiceFlag = localStorage.getItem('invoiceChangeFlag')
+    console.log(invoiceFlag)
+    if (invoiceFlag != '-1'){
       //get the invoice by key id
-      let voiceid = voiceFlag;
+      let invoiceid = invoiceFlag;
       axios.defaults.headers.common['Authorization'] = "Bearer "+token
-      axios.post('/api/createInvoice', voiceid, {
+      axios.post('/api/createInvoice', invoiceid, {
         headers:{
           'Authorization':"Bearer " + token,
           'content-type': 'application/json'
@@ -334,8 +332,8 @@ export default {
       }).then(function (response){
         console.log(response)
 // Mock Invoice response
-        // _that.form.billing = "56666"
-        // _that.form.status = 'Unpaid'
+//         _that.form.billing = "56666"
+//         _that.form.status = 'Unpaid'
 //       let response = {
 //         "invoiceId": "10",
 //         "invoiceDate": "12-04-2021",
@@ -379,25 +377,24 @@ export default {
 //           }
 //         }
 // console.log(response)
-      _that.invoiceid = response.invoiceId
-          _that.form.date = response.invoiceDate
-          _that.form.dueDate = response.dueDate
-          _that.form.companyname = response.companyName
-          _that.form.companystreetname = response.companyStreetName
-          _that.form.companypostalcode = response.companyPostalCode
-          _that.form.companytown = response.companyTown
-          _that.form.companycountry = response.companyCountry
-          _that.form.status = response['status']
+      _that.$set(_that.form,'date',response.invoiceDate)
+      _that.$set(_that.form,'dueDate',response.dueDate)
+      _that.$set(_that.form,'companyname',response.companyName)
+      _that.$set(_that.form,'companystreetname',response.companyStreetName)
+      _that.$set(_that.form,'companypostalcode',response.companyPostalCode)
+      _that.$set(_that.form,'companytown',response.companyTown)
+      _that.$set(_that.form,'companycountry',response.companyCountry)
+      _that.$set(_that.form,'status',response.status)
             for(let index = 0; index < _that.clientList.length; index++){
               if (_that.clientList[index].id == response.address.billingid){
-                _that.form.billing = index;
+                _that.$set(_that.form,'billing',index)
               }
               if (_that.clientList[index].id == response.address.shippingid){
-                _that.form.shipping = index;
+                _that.$set(_that.form,'shipping',index)
               }
             }
-            _that.form.salestax = response.address.salesTax,
-            _that.entityList = response.address.entries
+      _that.$set(_that.form,'salestax',response.address.salesTax)
+      _that.$set(_that,'entityList',response.address.entries)
       }).catch(function (error){
         console.log(error)
       })
@@ -442,10 +439,10 @@ export default {
           "entries": _that.entityList
         }
       }
-      let voiceFlag = localStorage.getItem('voiceChangeFlag')
+      let invoiceFlag = localStorage.getItem('invoiceChangeFlag')
       let url = '/api/createInvoice'
-      if (voiceFlag != '-1'){
-        newInvoice.invoiceId = _that.invoiceid
+      if (invoiceFlag != '-1'){
+        newInvoice.invoiceId = invoiceFlag
         url = '/api/createInvoice'
       }
       console.log(newInvoice)

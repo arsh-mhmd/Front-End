@@ -73,6 +73,7 @@ export default {
   },
   created() {
     let _that = this;
+    localStorage.setItem('clientChangeFlag','-1')
     let token = localStorage.getItem('token')
     axios.defaults.headers.common['Authorization'] = "Bearer "+token
     axios.get('/api/showAllClient').then(function (response){
@@ -92,6 +93,11 @@ export default {
       this.$router.push({path: "/newClient"});
     },
     editClient(){
+      let _that = this
+      localStorage.setItem('clientChangeFlag',_that.templateSelection.clientId)
+      // localStorage.setItem('clientChangeFlag','10')
+      console.log("12321")
+      _that.$router.push({path: "/newClient"});
     },
     deleteClient(){
     },
