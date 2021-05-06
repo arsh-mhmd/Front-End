@@ -6,6 +6,7 @@
         <el-button @click="getPDF()" type="primary">Get PDF</el-button>
         <el-button @click="sendEmail()" type="primary">Send E-mail</el-button>
         <el-button @click="deleteInvoice()" type="primary" v-bind:disabled="deleteable">Delete</el-button>
+        <el-button @click="editInvoice()" type="primary">Edit</el-button>
       </div>
 
       <el-tabs v-model="activeName">
@@ -33,7 +34,7 @@
             </div>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="Status" name="second">
+        <el-tab-pane label="Show by Status" name="second">
             <el-select v-model="searchStatus" placeholder="Status" style="width: 200px">
               <el-option
                 v-for="item in paymentStatus"
@@ -66,7 +67,7 @@
             </div>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="Name" name="third">
+        <el-tab-pane label="Show by Name" name="third">
           <el-input class="searchBox" placeholder="Search" v-model="searchname" style="width: 200px">
           </el-input>
           <el-button @click="searchByname()" type="primary">Search</el-button>
@@ -93,7 +94,7 @@
             </div>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="Time" name="fourth">
+        <el-tab-pane label="Show by Time" name="fourth">
           <el-date-picker
             v-model="searchdateS"
             type="date"
@@ -235,6 +236,7 @@ export default {
     if(role != 0){
       _that.deleteable = true
     }
+    localStorage.setItem('voiceChangeFlag','-1')
     console.log(_that.deleteable)
     axios.defaults.headers.common['Authorization'] = "Bearer "+localStorage.getItem('token')
     axios.get('/api/getAllInvoices').then(function (response){
@@ -260,6 +262,12 @@ export default {
     deleteInvoice(){
       let role = localStorage.getItem('role')
       console.log(role)
+    },
+    editInvoice(){
+      let _that = this
+      // localStorage.setItem('voiceChangeFlag',_that.templateSelection.invoiceId)
+      localStorage.setItem('voiceChangeFlag','2')
+      _that.$router.push({path: "/newInvoice"});
     },
     confirmemail(){
       let _that = this

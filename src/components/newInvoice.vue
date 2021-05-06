@@ -13,11 +13,11 @@
           <el-row>
             <el-col :span='9'>
               <el-form-item label="Billing">
-                <el-select v-model="form.billing" placeholder="billing to">
+                <el-select v-model="form.billing" placeholder="billing to" @change="handleselectchange()">
                   <el-option
                     v-for="(item, index) in clientList"
                     :key="index"
-                    :label="item.firstName + ' ' + item.lastName"
+                    :label="item.firstName + ' ' + item.lastName + '    (id)' + item.id"
                     :value="index">
                   </el-option>
                 </el-select>
@@ -25,11 +25,11 @@
             </el-col>
             <el-col :span='9'>
               <el-form-item label="Shipping">
-                <el-select v-model="form.shipping" placeholder="shipping to">
+                <el-select v-model="form.shipping" placeholder="shipping to" @change="handleselectchange()">
                   <el-option
                     v-for="(item, index) in clientList"
                     :key="index"
-                    :label="item.firstName + ' ' + item.lastName"
+                    :label="item.firstName + ' ' + item.lastName + '    (id)' + item.id"
                     :value="index">
                   </el-option>
                 </el-select>
@@ -105,7 +105,7 @@
           <el-row>
               <el-col :span='6'>
                 <el-form-item label="Status" prop="status">
-                  <el-select v-model="form.status" prop="status" placeholder="Status" style="width: 200px">
+                  <el-select v-model="form.status" placeholder="Status" style="width: 200px" @change="handleselectchange()">
                     <el-option
                     v-for="item in paymentStatus"
                     :key="item.value"
@@ -299,7 +299,8 @@ export default {
         price:"",
         index:""
       },
-      totalMount:""
+      totalMount:"",
+      invoiceid:""
     };
   },
   filters: {
@@ -310,10 +311,7 @@ export default {
   },
   created() {
     let _that = this
-    _that.totalMount = 0
-    _that.entityList.forEach((item)=>{
-      _that.totalMount += item.price * item.quantity
-    })
+    console.log("2333")
     let token = localStorage.getItem('token')
     axios.defaults.headers.common['Authorization'] = "Bearer "+token
     axios.get('/api/showAllClient').then(function (response){
@@ -322,6 +320,92 @@ export default {
     }).catch(function (error){
       console.log(error)
     })
+    let voiceFlag = localStorage.getItem('voiceChangeFlag')
+    console.log(voiceFlag)
+    if (voiceFlag != '-1'){
+      //get the invoice by key id
+      let voiceid = voiceFlag;
+      axios.defaults.headers.common['Authorization'] = "Bearer "+token
+      axios.post('/api/createInvoice', voiceid, {
+        headers:{
+          'Authorization':"Bearer " + token,
+          'content-type': 'application/json'
+        }
+      }).then(function (response){
+        console.log(response)
+// Mock Invoice response
+        // _that.form.billing = "56666"
+        // _that.form.status = 'Unpaid'
+//       let response = {
+//         "invoiceId": "10",
+//         "invoiceDate": "12-04-2021",
+//         "dueDate": "12-05-2021",
+//         "userId": "qwerty",
+//         "companyName": "East Repair Inc.",
+//         "companyStreetName": "1912 Harvest Lane",
+//         "companyPostalCode": "NY 12210",
+//         "companyTown": "New York",
+//         "companyCountry": "USA",
+//         "status": "Awaiting Payment",
+//         "address": {
+//         "billingFirstName": "John",
+//           "billingLastName": "Smith",
+//           "billingStreetName": "2 Court Square",
+//           "billingPostalCode": "NY 12210",
+//           "billingTown": "New York",
+//           "billingCountry": "USA",
+//           "billingid":"2",
+//           "shippingFirstName": "John",
+//           "shippingLastName": "Smith",
+//           "shippingStreetName": "3787 Pineview Drive",
+//           "shippingPostalCode": "MA 12210",
+//           "shippingTown": "Cambridge",
+//           "shippingCountry": "UK",
+//           "shippingid":"1",
+//           "salesTax": "6.25",
+//           "entries" : [{
+//           "productName":"Front and rear bracke cables",
+//           "quantity":"1",
+//           "price":"100"
+//         }, {
+//           "productName":"New set of pedal arms",
+//           "quantity":"2",
+//           "price":"15"
+//         }, {
+//           "productName":"Labor 3hrs",
+//           "quantity":"3",
+//           "price":"5"
+//             }]
+//           }
+//         }
+// console.log(response)
+      _that.invoiceid = response.invoiceId
+          _that.form.date = response.invoiceDate
+          _that.form.dueDate = response.dueDate
+          _that.form.companyname = response.companyName
+          _that.form.companystreetname = response.companyStreetName
+          _that.form.companypostalcode = response.companyPostalCode
+          _that.form.companytown = response.companyTown
+          _that.form.companycountry = response.companyCountry
+          _that.form.status = response['status']
+            for(let index = 0; index < _that.clientList.length; index++){
+              if (_that.clientList[index].id == response.address.billingid){
+                _that.form.billing = index;
+              }
+              if (_that.clientList[index].id == response.address.shippingid){
+                _that.form.shipping = index;
+              }
+            }
+            _that.form.salestax = response.address.salesTax,
+            _that.entityList = response.address.entries
+      }).catch(function (error){
+        console.log(error)
+      })
+    }
+      _that.totalMount = 0
+      _that.entityList.forEach((item)=>{
+        _that.totalMount += item.price * item.quantity
+      })
   },
   methods: {
     submit() {
@@ -346,18 +430,26 @@ export default {
           "billingPostalCode": _that.clientList[billindex].postalCode,
           "billingTown": _that.clientList[billindex].town,
           "billingCountry": _that.clientList[billindex].country,
+          "billingid": _that.clientList[billindex].id,
           "shippingFirstName": _that.clientList[shipindex].firstName,
           "shippingLastName": _that.clientList[shipindex].lastName,
           "shippingStreetName": _that.clientList[shipindex].streetName,
           "shippingPostalCode": _that.clientList[shipindex].postalCode,
           "shippingTown": _that.clientList[shipindex].town,
           "shippingCountry": _that.clientList[shipindex].country,
+          "shippingid": _that.clientList[shipindex].id,
           "salesTax": _that.form.salestax,
           "entries": _that.entityList
         }
       }
+      let voiceFlag = localStorage.getItem('voiceChangeFlag')
+      let url = '/api/createInvoice'
+      if (voiceFlag != '-1'){
+        newInvoice.invoiceId = _that.invoiceid
+        url = '/api/createInvoice'
+      }
       console.log(newInvoice)
-      axios.post('/api/createInvoice', newInvoice, {
+      axios.post(url, newInvoice, {
         headers:{
           'Authorization':"Bearer " + token,
           'content-type': 'application/json'
@@ -376,6 +468,13 @@ export default {
     },
     cancel(){
       let _that = this
+      console.log(_that.form.billing)
+      console.log(_that.form.shipping)
+      this.$router.push({path: "/invoiceList"});
+    },
+    handleselectchange(){
+      let _that = this
+      this.$forceUpdate()
       console.log(_that.form.billing)
       console.log(_that.form.shipping)
     },
