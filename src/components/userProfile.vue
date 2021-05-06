@@ -28,20 +28,17 @@
             <el-input
               placeholder="password"
               v-model="form.password"
-              :disabled="isChangePassword"
             ></el-input>
           </el-form-item>
-          <el-form-item label="Enter Password to Verify" prop="repassword">
+          <el-form-item id = "final" label="Enter Password to Verify" prop="repassword">
             <el-input
+             :disabled = isDisabled
               placeholder="password"
               v-model="form.repassword"
             ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button @click="save" type="primary" round>Save</el-button>
-            <el-button @click="changePassword" type="primary" round
-              >Change Password</el-button
-            >
             <el-button @click="verifyPassword" type="primary" round
               >Verify Password</el-button
             >
@@ -89,8 +86,8 @@ export default {
     if (role != 0) {
       _that.deleteable = true;
     }
-    _that.isChangePassword = true;
-    _that.isShown = "visible";
+    // _that.isChangePassword = true;
+    _that.isDisabled = false;
     localStorage.setItem("voiceChangeFlag", "-1");
     console.log(_that.deleteable);
     axios.defaults.headers.common["Authorization"] =
@@ -134,6 +131,12 @@ export default {
           console.log(response);
           if (response.status == 200) {
             alert("Profile Update Success");
+            _that.$set(_that.form, "firstName", response.data.firstName);
+          _that.$set(_that.form, "lastName", response.data.lastName);
+          _that.$set(_that.form, "email", response.data.email);
+          _that.$set(_that.form, "userName", response.data.userName);
+          _that.$set(_that.form, "password", response.data.password);
+           _that.$set(_that.form, "repassword", "");
           } else {
             alert("Fail, Error: " + response.status);
           }
@@ -141,10 +144,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-    },
-    changePassword() {
-      const _that = this;
-      _that.isChangePassword = false;
     },
 
     verifyPassword() {
@@ -163,8 +162,10 @@ export default {
         .then(function (response) {
           console.log(response);
           if (response.data == true) {
-            alert("Profile Update Success");
-            _that.$set(_that.form, "repassword", "");
+            alert("Password Verification Success");
+            // _that.isDisabled = true;
+            // _that.form["__ob__"].dep.subs[6].vm._self.$options.propsData.label="new"; 
+            _that.$set(_that.form, "password", "");
           } else {
             alert("Fail, Error: " + response.data);
           }
