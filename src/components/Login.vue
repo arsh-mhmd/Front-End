@@ -88,6 +88,19 @@ export default {
   },
   methods: {
     login(){
+      
+      const _that =this
+      //this is for register
+      let auth_url =  "/api/oauth/token?grant_type=password&username="+_that.loginForm.user+"&password="+_that.loginForm.pass
+      axios.defaults.headers.common['Authorization'] = "Basic Zm9vQ2xpZW50SWQ6c2VjcmV0"
+      axios.post(auth_url).then(function (response){
+        let token = response.data['access_token']
+        localStorage.setItem('token',token)
+        
+        // request register interface
+      }).catch(function (error){
+        console.log(error)
+      })
       this.$router.push({path: "/moneyList",query: {role: this.loginForm.role}});
     },
     goRegister(){

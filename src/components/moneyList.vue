@@ -35,6 +35,8 @@ export default {
     },
   },
   created() {
+
+    console.log(localStorage.getItem('token'))
   },
   mounted(){
     this.$nextTick(() => {

@@ -76,6 +76,13 @@ export default {
           { id: "01", authName: "Manage invoice", path: "invoiceList" },
           ]
         },
+        {
+          id: "104",
+          authName: "Manage Users",
+          children: [
+          { id: "01", authName: "Manage Users", path: "managerList" },
+          ]
+        },
       ],
       iconobj: {
         "101": "iconfont icon-shangpin",
@@ -92,6 +99,7 @@ export default {
   },
   methods: {
     logout() {
+      
       this.$router.push("/login");
     },
 
