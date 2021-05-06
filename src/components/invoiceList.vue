@@ -317,7 +317,7 @@ export default {
     if (role != 0) {
       _that.deleteable = true;
     }
-    localStorage.setItem("voiceChangeFlag", "-1");
+    localStorage.setItem("invoiceChangeFlag", "-1");
     console.log(_that.deleteable);
     axios.defaults.headers.common["Authorization"] =
       "Bearer " + localStorage.getItem("token");
@@ -348,8 +348,8 @@ export default {
         return;
       }
       localStorage.setItem(
-        "voiceChangeFlag",
-        _that.templateSelection.invoiceId
+        "invoiceChangeFlag",
+        _that.templateSelection.invoiceid
       );
       // localStorage.setItem('invoiceChangeFlag','2')
       _that.$router.push({ path: "/newInvoice" });
