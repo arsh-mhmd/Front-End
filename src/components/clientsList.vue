@@ -49,6 +49,7 @@ export default {
           postalCode: "NY 12210",
           town: "New York",
           country: "USA",
+          clientid:1
         },
         {
           firstName: "222",
@@ -58,9 +59,12 @@ export default {
           postalCode: "NK 34534",
           town: "England",
           country: "OK",
+          clientid: 2
         },
       ],
-      templateSelection:{},
+      templateSelection:{
+        clientid:-1
+      },
       radio:'',
       keyword:''
     };
@@ -94,6 +98,11 @@ export default {
     },
     editClient(){
       let _that = this
+      console.log(_that.templateSelection.clientid)
+      if(_that.templateSelection.clientid == -1){
+        alert("Please select a client");
+        return
+      }
       localStorage.setItem('clientChangeFlag',_that.templateSelection.clientId)
       // localStorage.setItem('clientChangeFlag','10')
       console.log("12321")

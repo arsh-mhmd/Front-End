@@ -189,7 +189,9 @@ export default {
         }
       ],
       keyword:'',
-      templateSelection: {},
+      templateSelection: {
+        invoiceid:-1
+      },
       radio: '',
       tableData: [],
       paymentStatus:[
@@ -265,6 +267,10 @@ export default {
     },
     editInvoice(){
       let _that = this
+      if(_that.templateSelection.invoiceid == -1){
+        alert("Please select an invoice");
+        return
+      }
       localStorage.setItem('voiceChangeFlag',_that.templateSelection.invoiceId)
       // localStorage.setItem('invoiceChangeFlag','2')
       _that.$router.push({path: "/newInvoice"});
