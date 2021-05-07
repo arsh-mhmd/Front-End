@@ -330,7 +330,9 @@ export default {
           _that.invoiceList = response.data;
         }
       })
-      .catch(function (error) {});
+      .catch(function (error) {
+        alert("Connect Fail");
+      });
   },
   methods: {
     search() {},

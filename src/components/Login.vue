@@ -24,16 +24,6 @@
             v-model="loginForm.pass"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="role">
-          <el-select v-model="loginForm.role" placeholder="Role Select">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item>
           <i  style="cursor: pointer;" @click="goRegister" class="el-icon-warning mr10"></i>
           <span  style="cursor: pointer;" @click="goRegister">Not a member? Register</span>
@@ -58,20 +48,6 @@ export default {
         role:''
       },
       role:null,
-      options:[
-        {
-          value:'0',
-          label:'Owner'
-        },
-        {
-          value:'1',
-          label:'Manager'
-        },
-        {
-          value:'2',
-          label:'Activate'
-        }
-      ],
       //login check rules
       loginFormRules: {
         user : [
@@ -84,11 +60,15 @@ export default {
     };
   },
   created(){
-
+    let tokenitem = localStorage.getItem('token')
+    console.log(tokenitem)
+    if(tokenitem != null){
+      this.$router.push({path: "/moneyList"});
+    }
   },
   methods: {
     login(){
-      
+
       const _that =this
       //this is for register
       let auth_url =  "/api/oauth/token?grant_type=password&username="+_that.loginForm.user+"&password="+_that.loginForm.pass
@@ -97,8 +77,11 @@ export default {
         let token = response.data['access_token']
         localStorage.setItem('token',token)
         localStorage.setItem('loginUser',_that.loginForm.user)
+        localStorage.setItem('role',response.role)
+        console.log("This is a "+ response.role)
         // request register interface
       }).catch(function (error){
+        alert("Connect Fail");
         console.log(error)
       })
       this.$router.push({path: "/moneyList",query: {role: this.loginForm.role}});

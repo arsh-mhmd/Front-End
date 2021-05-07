@@ -316,6 +316,7 @@ export default {
       console.log(response)
       _that.clientList = response.data;
     }).catch(function (error){
+      alert("Connect Fail");
       console.log(error)
     })
     let invoiceFlag = localStorage.getItem('invoiceChangeFlag')
@@ -396,6 +397,7 @@ export default {
       _that.$set(_that.form,'salestax',response.address.salesTax)
       _that.$set(_that,'entityList',response.address.entries)
       }).catch(function (error){
+        alert("Connect Fail");
         console.log(error)
       })
     }

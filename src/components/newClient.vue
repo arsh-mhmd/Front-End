@@ -109,6 +109,7 @@ export default {
       _that.$set(_that.form,'town',response.town)
       _that.$set(_that.form,'country',response.country)
       }).catch(function (error){
+        alert("Connect Fail");
         console.log(error)
       })
     }

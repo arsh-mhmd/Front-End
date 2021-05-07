@@ -84,6 +84,7 @@ export default {
       console.log(response)
       _that.rightsList = response.data;
     }).catch(function (error){
+      alert("Connect Fail");
       console.log(error)
     })
   },
@@ -105,7 +106,6 @@ export default {
       }
       localStorage.setItem('clientChangeFlag',_that.templateSelection.clientId)
       // localStorage.setItem('clientChangeFlag','10')
-      console.log("12321")
       _that.$router.push({path: "/newClient"});
     },
     deleteClient(){

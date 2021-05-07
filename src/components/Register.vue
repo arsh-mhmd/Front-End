@@ -100,6 +100,7 @@ export default {
 
         }).catch(function (error){
           console.log(error)
+          alert("Connect Fail");
         })
       }).catch(function (error){
         console.log(error)
