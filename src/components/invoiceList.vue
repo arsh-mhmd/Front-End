@@ -271,25 +271,21 @@ export default {
       tableData: [],
       paymentStatus: [
         {
-          value: "0",
-          label: "Paid",
+          value:'Awaiting payment',
+          label:'Awaiting payment'
         },
         {
-          value: "1",
-          label: "PartlyPaid",
+          value:'Partly Paid',
+          label:'Partly Paid'
         },
         {
-          value: "2",
-          label: "Unpaid",
+          value:'Paid',
+          label:'Paid'
         },
         {
-          value: "3",
-          label: "Draft",
-        },
-        {
-          value: "4",
-          label: "All",
-        },
+          value:'Draft',
+          label:'Draft'
+        }
       ],
       searchStatus: "4",
       searchname: "",
@@ -304,7 +300,7 @@ export default {
   filters: {
     formatDate(time) {
       var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd");
+      return formatDate(date, "yyyy/MM/dd");
     },
   },
   created() {
@@ -332,9 +328,64 @@ export default {
   },
   methods: {
     search() {},
-    searchBystatus() {},
-    searchByname() {},
-    searchBydata() {},
+    searchBystatus() {
+      let _that = this
+      let url = "/api/ownerMod/createReportByStatus?status="+_that.searchStatus
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      axios
+        .get(url)
+        .then(function (response) {
+          if (JSON.stringify(response) !== "{}") {
+            //localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
+            //console.log(response.data)
+            _that.invoiceList = response.data;
+            console.log("Get Invoive by Status");
+          }
+        })
+        .catch(function (error) {
+          alert("Connect Fail");
+        });
+    },
+    searchByname() {
+      let _that = this
+      let url = "/api/ownerMod/createReportByClientId?id="+_that.searchname
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      axios
+        .get(url)
+        .then(function (response) {
+          if (JSON.stringify(response) !== "{}") {
+            //localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
+            //console.log(response.data)
+            _that.invoiceList = response.data;
+            console.log("Get Invoive by Name");
+          }
+        })
+        .catch(function (error) {
+          alert("Connect Fail");
+        });
+    },
+    searchBydata() {
+      let _that = this
+      let filter = _that.$options.filters['formatDate']
+      let url = "/api/ownerMod/createReportByDate?date="+filter(_that.searchdateS)
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      axios
+        .get(url)
+        .then(function (response) {
+          if (JSON.stringify(response) !== "{}") {
+            //localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
+            //console.log(response.data)
+            _that.invoiceList = response.data;
+            console.log("Get Invoive by Name");
+          }
+        })
+        .catch(function (error) {
+          alert("Connect Fail");
+        });
+    },
     deleteInvoice() {
       let role = localStorage.getItem("role");
       console.log(role);

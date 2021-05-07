@@ -419,6 +419,7 @@ export default {
         "invoiceDate": filter(_that.form.date),
         "dueDate": filter(_that.form.dueDate),
         "userId": "qwerty",
+        "clientId": _that.clientList[billindex].id,
         "companyName": _that.form.companyname,
         "companyStreetName": _that.form.companystreetname,
         "companyPostalCode": _that.form.companypostalcode,
