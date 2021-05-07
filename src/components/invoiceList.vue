@@ -47,10 +47,9 @@
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
-            <el-table-column label="Paid" prop="paid"></el-table-column>
-            <el-table-column label="Due" prop="due"></el-table-column>
+            <el-table-column label="Paid" prop="paidAmount"></el-table-column>
+            <el-table-column label="Due" prop="dueAmount"></el-table-column>
             <el-table-column label="Status" prop="status"></el-table-column>
-            <el-table-column label="Sent" prop="sent"></el-table-column>
             <div slot="empty" class="emptyBg">
               <p>No data</p>
             </div>
@@ -100,10 +99,9 @@
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
-            <el-table-column label="Paid" prop="paid"></el-table-column>
-            <el-table-column label="Due" prop="due"></el-table-column>
+            <el-table-column label="Paid" prop="paidAmount"></el-table-column>
+            <el-table-column label="Due" prop="dueAmount"></el-table-column>
             <el-table-column label="Status" prop="status"></el-table-column>
-            <el-table-column label="Sent" prop="sent"></el-table-column>
             <div slot="empty" class="emptyBg">
               <p>No data</p>
             </div>
@@ -147,10 +145,9 @@
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
-            <el-table-column label="Paid" prop="paid"></el-table-column>
-            <el-table-column label="Due" prop="due"></el-table-column>
+            <el-table-column label="Paid" prop="paidAmount"></el-table-column>
+            <el-table-column label="Due" prop="dueAmount"></el-table-column>
             <el-table-column label="Status" prop="status"></el-table-column>
-            <el-table-column label="Sent" prop="sent"></el-table-column>
             <div slot="empty" class="emptyBg">
               <p>No data</p>
             </div>
@@ -192,10 +189,9 @@
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
-            <el-table-column label="Paid" prop="paid"></el-table-column>
-            <el-table-column label="Due" prop="due"></el-table-column>
+            <el-table-column label="Paid" prop="paidAmount"></el-table-column>
+            <el-table-column label="Due" prop="dueAmount"></el-table-column>
             <el-table-column label="Status" prop="status"></el-table-column>
-            <el-table-column label="Sent" prop="sent"></el-table-column>
             <div slot="empty" class="emptyBg">
               <p>No data</p>
             </div>

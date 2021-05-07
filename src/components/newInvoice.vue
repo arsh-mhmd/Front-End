@@ -241,19 +241,19 @@ export default {
       form: {},
       paymentStatus:[
         {
-          value:'0',
+          value:'Awaiting payment',
+          label:'Awaiting payment'
+        },
+        {
+          value:'Partly Paid',
+          label:'Partly Paid'
+        },
+        {
+          value:'Paid',
           label:'Paid'
         },
         {
-          value:'1',
-          label:'PartlyPaid'
-        },
-        {
-          value:'2',
-          label:'Unpaid'
-        },
-        {
-          value:'3',
+          value:'Draft',
           label:'Draft'
         }
       ],
@@ -305,7 +305,7 @@ export default {
   filters: {
     formatDate(time) {
       var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd");
+      return formatDate(date, "dd-MM-yyyy");
     },
   },
   created() {
@@ -412,15 +412,20 @@ export default {
       let token = localStorage.getItem('token')
       let billindex = _that.form.billing
       let shipindex = _that.form.shipping
+      let filter = _that.$options.filters['formatDate']
+      console.log(filter(_that.form.date))
+      console.log(filter(_that.form.dueDate))
       let newInvoice = {
-        "invoiceDate": _that.form.date,
-        "dueDate": _that.form.dueDate,
+        "invoiceDate": filter(_that.form.date),
+        "dueDate": filter(_that.form.dueDate),
         "userId": "qwerty",
         "companyName": _that.form.companyname,
         "companyStreetName": _that.form.companystreetname,
         "companyPostalCode": _that.form.companypostalcode,
         "companyTown": _that.form.companytown,
         "companyCountry": _that.form.companycountry,
+        "dueAmount": _that.totalMount - _that.form.paid,
+        "paidAmount": _that.form.paid,
         "status": _that.form.status,
         "address": {
           "billingFirstName": _that.clientList[billindex].firstName,
@@ -447,7 +452,7 @@ export default {
         newInvoice.invoiceId = invoiceFlag
         url = '/api/createInvoice'
       }
-      console.log(newInvoice)
+      console.log("Submit: "+newInvoice)
       axios.post(url, newInvoice, {
         headers:{
           'Authorization':"Bearer " + token,
