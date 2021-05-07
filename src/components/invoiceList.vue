@@ -403,10 +403,10 @@ export default {
       // localStorage.setItem('invoiceChangeFlag','2')
       _that.$router.push({ path: "/newInvoice" });
     },
+    //This is the sending email button, selected invoice information can be found in this.templateSelection
     confirmemail() {
       let _that = this;
-      console.log(_that.mailmode);
-      console.log(_that.mailsenddate);
+      console.log(this.templateSelection);
       _that.emailwindowvisible = false;
     },
     handleNewInvoice() {
@@ -441,6 +441,10 @@ export default {
 
     sendEmail() {
       let _that = this;
+      if (_that.templateSelection.invoiceid == -1) {
+        alert("Please select an invoice");
+        return;
+      }
       _that.emailwindowvisible = true;
     },
   },
