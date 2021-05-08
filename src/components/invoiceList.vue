@@ -418,6 +418,37 @@ export default {
           .then((response) => {
             alert("Send Email Success!");
           });
+      }else if(this.mailmode==2){
+        let ob = {}
+        ob.invoiceId = this.templateSelection.invoiceNo
+        ob.type = 0
+        axios.defaults.headers.common["Authorization"] =
+          "Bearer "+localStorage.getItem('token');
+        axios
+          .post("/api/addNewTimer",ob)
+
+          .then((response) => {
+            alert("Set monthly email success!");
+          });
+
+      }else if(this.mailmode ==3){
+        if (this.mailsenddate =="" ){
+          alert("please input due day!")
+          return
+        }
+
+        let ob = {}
+        ob.invoiceId = this.templateSelection.invoiceNo
+        ob.type = 1
+        ob.dueDay = this.mailsenddate
+        axios.defaults.headers.common["Authorization"] =
+          "Bearer "+localStorage.getItem('token');
+        axios
+          .post("/api/addNewTimer",ob)
+
+          .then((response) => {
+            alert("Set due email task success!");
+          });
       }
     },
     handleNewInvoice() {
