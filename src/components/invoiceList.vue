@@ -406,8 +406,19 @@ export default {
     //This is the sending email button, selected invoice information can be found in this.templateSelection
     confirmemail() {
       let _that = this;
-      console.log(this.templateSelection);
       _that.emailwindowvisible = false;
+      console.log(this.templateSelection.invoiceNo);
+      console.log(this.mailmode);
+      if (this.mailmode ==1){
+        axios.defaults.headers.common["Authorization"] =
+          "Bearer "+localStorage.getItem('token');
+        axios
+          .get("/api/sendInvoiceNow?invoiceId="+this.templateSelection.invoiceNo)
+
+          .then((response) => {
+            alert("Send Email Success!");
+          });
+      }
     },
     handleNewInvoice() {
       this.$router.push({ path: "/newInvoice" });

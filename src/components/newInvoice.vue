@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <div class="login_box">
-      <h1>Creat Invoice</h1>
+      <h1>Create Invoice</h1>
         <el-form
           ref="formRef"
           label-width="200"
@@ -462,7 +462,7 @@ export default {
       }).then(function (response) {
         console.log(response)
         if (response.status == 201) {
-          alert("Client Register Success");
+          alert("Create Invoice Success");
           console.log(response);
         } else {
           alert("Fail, Error: " + response.status);
