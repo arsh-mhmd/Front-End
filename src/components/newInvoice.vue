@@ -10,6 +10,8 @@
           :model="form"
         >
           <!--client sletor-->
+          <el-row>
+            <el-col :span='6'>
           <el-form-item label="Company Name">
                 <el-select v-model="form.companyName" placeholder="Company Name" @change="handleCompanyChange()">
                   <el-option
@@ -20,6 +22,45 @@
                   </el-option>
                 </el-select>
               </el-form-item>
+            </el-col>
+            <el-col :span='6'>
+              <el-form-item label="CompanyStreetName" prop="companystreetname">
+            <el-input
+              placeholder="CompanyStreetName"
+              v-model="form.companystreetname"
+            ></el-input>
+          </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span='8'>
+              <el-form-item label="CompanyPostalCode" prop="companypostalcode">
+                <el-input
+                  placeholder="CompanyPostalCode"
+                  v-model="form.companypostalcode"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='8'>
+              <el-form-item label="CompanyTown" prop="companytown">
+                <el-input
+                  placeholder="CompanyTown"
+                  v-model="form.companytown"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='8'>
+              <el-form-item label="CompanyCountry" prop="companycountry">
+                <el-input
+                  placeholder="CompanyCountry"
+                  v-model="form.companycountry"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col :span='9'>
               <el-form-item label="Billing">
@@ -74,41 +115,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="CompanyStreetName" prop="companystreetname">
-            <el-input
-              placeholder="CompanyStreetName"
-              v-model="form.companystreetname"
-            ></el-input>
-          </el-form-item>
-          <el-row>
-            <el-col :span='8'>
-              <el-form-item label="CompanyPostalCode" prop="companypostalcode">
-                <el-input
-                  placeholder="CompanyPostalCode"
-                  v-model="form.companypostalcode"
-                  style="width: 200px"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span='8'>
-              <el-form-item label="CompanyTown" prop="companytown">
-                <el-input
-                  placeholder="CompanyTown"
-                  v-model="form.companytown"
-                  style="width: 200px"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span='8'>
-              <el-form-item label="CompanyCountry" prop="companycountry">
-                <el-input
-                  placeholder="CompanyCountry"
-                  v-model="form.companycountry"
-                  style="width: 200px"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
+          
 <!--          status-->
           <el-row>
               <el-col :span='6'>
@@ -516,13 +523,32 @@ export default {
       this.$forceUpdate()
     let token = localStorage.getItem('token')
     axios.defaults.headers.common['Authorization'] = "Bearer "+token
-      axios.get('/api/findClientByCompanyId?companyId='+_that.companyList[_that.form.companyName].companyId).then(function (response){
-      console.log(response)
-      _that.clientList = response.data;
-    }).catch(function (error){
-      alert("Connect Fail");
-      console.log(error)
-    })
+
+    const clientRequest = axios.get(
+        '/api/findClientByCompanyId?companyId='+_that.companyList[_that.form.companyName].companyId);
+      const companyRequest = axios.get('/api/findCompanyByCompanyId?companyId='+_that.companyList[_that.form.companyName].companyId);
+
+      axios
+        .all([clientRequest, companyRequest])
+        .then(
+          axios.spread((...responses) => {
+            const clientResponse = responses[0];
+            const companyResponse = responses[1];
+           
+            _that.clientList = clientResponse.data;
+
+            _that.$set(_that.form,'companystreetname',companyResponse.data.companyStreetName)
+      _that.$set(_that.form,'companytown',companyResponse.data.companyTown)
+      _that.$set(_that.form,'companycountry',companyResponse.data.companyCountry)
+      _that.$set(_that.form,'companypostalcode',companyResponse.data.companyPostalCode)
+            // use/access the results
+            console.log(clientResponse, companyResponse);
+          })
+        )
+        .catch((errors) => {
+          // react on errors.
+          console.error(errors);
+        });
     },
     newEntity(){
       let _that = this
