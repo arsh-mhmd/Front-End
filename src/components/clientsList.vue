@@ -109,6 +109,29 @@ export default {
       _that.$router.push({path: "/newClient"});
     },
     deleteClient(){
+      let _that = this;
+      if(_that.templateSelection.clientid == -1){
+        alert("Please select a client");
+        return
+      }
+      let url = "/api/removeClient?clientId="+_that.templateSelection.clientId
+      console.log(url)
+      let token = localStorage.getItem('token')
+      axios.defaults.headers.common['Authorization'] = "Bearer "+token
+      axios.delete(url).then(function (response){
+        console.log(response)
+        alert("Delete Success");
+        axios.get('/api/showAllClient').then(function (response){
+          console.log(response)
+          _that.rightsList = response.data;
+        }).catch(function (error){
+          alert("Connect Fail");
+          console.log(error)
+        })
+      }).catch(function (error){
+        alert("Connect Fail");
+        console.log(error)
+      })
     },
   },
 };

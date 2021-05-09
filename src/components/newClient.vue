@@ -83,14 +83,17 @@ export default {
     if (clientFlag != '-1'){
       //get the client by key id
       let clientid = clientFlag;
-      axios.defaults.headers.common['Authorization'] = "Bearer "+token
-      axios.post('/api/createInvoice', clientid, {
-        headers:{
-          'Authorization':"Bearer " + token,
-          'content-type': 'application/json'
-        }
-      }).then(function (response){
-        console.log(response)
+      let url = "/api/selectClient?clientId="+clientid
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      axios
+        .get(url)
+        .then(function (response) {
+          console.log("Get Client");
+          console.log(response);
+          if (JSON.stringify(response) !== "{}") {
+            //localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
+            //console.log(response.data)
       // Mock client
       // let response = {
       //   firstName: "John",
@@ -101,14 +104,15 @@ export default {
       //   town: "New York",
       //   country: "USA",
       // }
-      _that.$set(_that.form,'firstName',response.firstName)
-      _that.$set(_that.form,'lastName',response.lastName)
-      _that.$set(_that.form,'email',response.email)
-      _that.$set(_that.form,'streetName',response.streetName)
-      _that.$set(_that.form,'postalCode',response.postalCode)
-      _that.$set(_that.form,'town',response.town)
-      _that.$set(_that.form,'country',response.country)
-      }).catch(function (error){
+      _that.$set(_that.form,'id',response.data.id)
+      _that.$set(_that.form,'firstName',response.data.firstName)
+      _that.$set(_that.form,'lastName',response.data.lastName)
+      _that.$set(_that.form,'email',response.data.email)
+      _that.$set(_that.form,'streetName',response.data.streetName)
+      _that.$set(_that.form,'postalCode',response.data.postalCode)
+      _that.$set(_that.form,'town',response.data.town)
+      _that.$set(_that.form,'country',response.data.country)
+      }}).catch(function (error){
         alert("Connect Fail");
         console.log(error)
       })
@@ -125,14 +129,16 @@ export default {
       let url = '/api/registerClient'
       let clientFlag = localStorage.getItem('clientChangeFlag')
       if (clientFlag != '-1'){
-        url = '/api/registerClient'
-        createClient.clientid = clientFlag
+        url = '/api/updateClient'
+        createClient.clientId = clientFlag
+        createClient.id = _that.form.id
       }
       console.log(createClient)
       axios.post(url,createClient).then(function (response){
         console.log(response)
-        if (response.status == 201){
+        if (response.status == 201 || response.status == 200){
           alert("Client Register Success");
+          _that.$router.push({path: "/clientsList"});
         } else {
           alert("Fail, Error: "+ response.status);
         }
