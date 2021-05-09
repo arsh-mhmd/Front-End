@@ -10,6 +10,16 @@
           :model="form"
         >
           <!--client sletor-->
+          <el-form-item label="Company Name">
+                <el-select v-model="form.companyName" placeholder="Company Name" @change="handleCompanyChange()">
+                  <el-option
+                    v-for="(item, index) in companyList"
+                    :key="index"
+                    :label="item.companyName"
+                    :value="index">
+                  </el-option>
+                </el-select>
+              </el-form-item>
           <el-row>
             <el-col :span='9'>
               <el-form-item label="Billing">
@@ -64,12 +74,6 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="CompanyName" prop="companyname">
-            <el-input
-              placeholder="CompanyName"
-              v-model="form.companyname"
-            ></el-input>
-          </el-form-item>
           <el-form-item label="CompanyStreetName" prop="companystreetname">
             <el-input
               placeholder="CompanyStreetName"
@@ -243,6 +247,7 @@ export default {
   data() {
     return {
       form: {},
+      companyList:[],
       paymentStatus:[
         {
           value:'Awaiting payment',
@@ -315,7 +320,19 @@ export default {
   created() {
     let _that = this
     let token = localStorage.getItem('token')
-    axios.defaults.headers.common['Authorization'] = "Bearer "+token
+
+    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    axios
+      .get("/api/showAllCompanies")
+      .then(function (response) {
+        console.log(response);
+        _that.companyList = response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+
     axios.get('/api/showAllClient').then(function (response){
       console.log(response)
       _that.clientList = response.data;
@@ -428,11 +445,12 @@ export default {
         "dueDate": _that.form.dueDate,
         "userId": "qwerty",
         //"clientId": _that.clientList[billindex].id,
-        "companyName": _that.form.companyname,
-        "companyStreetName": _that.form.companystreetname,
-        "companyPostalCode": _that.form.companypostalcode,
-        "companyTown": _that.form.companytown,
-        "companyCountry": _that.form.companycountry,
+        "companyId": _that.companyList[_that.form.companyName].companyId,
+        "companyName": _that.companyList[_that.form.companyName].companyName,
+        "companyStreetName": _that.companyList[_that.form.companyName].companyStreetName,
+        "companyPostalCode": _that.companyList[_that.form.companyName].companyPostalCode,
+        "companyTown": _that.companyList[_that.form.companyName].companyTown,
+        "companyCountry": _that.companyList[_that.form.companyName].companyCountry,
         "dueAmount": _that.totalMount - _that.form.paid,
         "paidAmount": _that.form.paid,
         "status": _that.form.status,
@@ -492,6 +510,19 @@ export default {
       this.$forceUpdate()
       console.log(_that.form.billing)
       console.log(_that.form.shipping)
+    },
+    handleCompanyChange(){
+      let _that = this
+      this.$forceUpdate()
+    let token = localStorage.getItem('token')
+    axios.defaults.headers.common['Authorization'] = "Bearer "+token
+      axios.get('/api/findClientByCompanyId?companyId='+_that.companyList[_that.form.companyName].companyId).then(function (response){
+      console.log(response)
+      _that.clientList = response.data;
+    }).catch(function (error){
+      alert("Connect Fail");
+      console.log(error)
+    })
     },
     newEntity(){
       let _that = this
