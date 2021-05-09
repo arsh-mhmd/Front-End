@@ -265,7 +265,7 @@ export default {
       ],
       keyword: "",
       templateSelection: {
-        invoiceid: -1,
+        id: -1,
       },
       radio: "",
       tableData: [],
@@ -327,7 +327,6 @@ export default {
       });
   },
   methods: {
-    search() {},
     searchBystatus() {
       let _that = this
       let url = "/api/ownerMod/createReportByStatus?status="+_that.searchStatus
@@ -387,18 +386,39 @@ export default {
         });
     },
     deleteInvoice() {
-      let role = localStorage.getItem("role");
-      console.log(role);
+      let _that = this;
+      if (_that.templateSelection.id == -1) {
+        alert("Please select an invoice");
+        return;
+      }
+      let url = "/api/ownerMod/removeInvoice?id="+_that.templateSelection.id
+      console.log(url)
+      let token = localStorage.getItem('token')
+      axios.defaults.headers.common['Authorization'] = "Bearer "+token
+      axios.delete(url).then(function (response){
+        console.log(response)
+        alert("Delete Success");
+        axios.get('/api/getAllInvoices').then(function (response){
+          console.log(response)
+          _that.invoiceList = response.data;
+        }).catch(function (error){
+          alert("Connect Fail");
+          console.log(error)
+        })
+      }).catch(function (error){
+        alert("Connect Fail");
+        console.log(error)
+      })
     },
     editInvoice() {
       let _that = this;
-      if (_that.templateSelection.invoiceid == -1) {
+      if (_that.templateSelection.id == -1) {
         alert("Please select an invoice");
         return;
       }
       localStorage.setItem(
         "invoiceChangeFlag",
-        _that.templateSelection.invoiceid
+        _that.templateSelection.id
       );
       // localStorage.setItem('invoiceChangeFlag','2')
       _that.$router.push({ path: "/newInvoice" });

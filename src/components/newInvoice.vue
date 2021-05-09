@@ -46,7 +46,9 @@
                 <el-date-picker
                   v-model="form.date"
                   type="date"
-                  placeholder="Date">
+                  placeholder="Date"
+                  format="dd-MM-yyyy"
+                  value-format="dd-MM-yyyy">
                 </el-date-picker>
               </el-form-item>
             </el-col>
@@ -55,7 +57,9 @@
                 <el-date-picker
                   v-model="form.dueDate"
                   type="date"
-                  placeholder="Due Date">
+                  placeholder="Due Date"
+                  format="dd-MM-yyyy"
+                  value-format="dd-MM-yyyy">
                 </el-date-picker>
               </el-form-item>
             </el-col>
@@ -306,7 +310,7 @@ export default {
     formatDate(time) {
       var date = new Date(time);
       return formatDate(date, "dd-MM-yyyy");
-    },
+    }
   },
   created() {
     let _that = this
@@ -319,19 +323,20 @@ export default {
       alert("Connect Fail");
       console.log(error)
     })
+
     let invoiceFlag = localStorage.getItem('invoiceChangeFlag')
-    console.log(invoiceFlag)
     if (invoiceFlag != '-1'){
-      //get the invoice by key id
+      //get the client by key id
       let invoiceid = invoiceFlag;
-      axios.defaults.headers.common['Authorization'] = "Bearer "+token
-      axios.post('/api/createInvoice', invoiceid, {
-        headers:{
-          'Authorization':"Bearer " + token,
-          'content-type': 'application/json'
-        }
-      }).then(function (response){
-        console.log(response)
+      let url = "/api/getInvoice?id="+invoiceid
+      let refilter = _that.$options.filters['reFormatDate']
+      axios
+        .get(url)
+        .then(function (response) {
+          console.log("Get Inovice");
+          console.log(response);
+          if (JSON.stringify(response) !== "{}") {
+            console.log(response)
 // Mock Invoice response
 //         _that.form.billing = "56666"
 //         _that.form.status = 'Unpaid'
@@ -378,25 +383,28 @@ export default {
 //           }
 //         }
 // console.log(response)
-      _that.$set(_that.form,'date',response.invoiceDate)
-      _that.$set(_that.form,'dueDate',response.dueDate)
-      _that.$set(_that.form,'companyname',response.companyName)
-      _that.$set(_that.form,'companystreetname',response.companyStreetName)
-      _that.$set(_that.form,'companypostalcode',response.companyPostalCode)
-      _that.$set(_that.form,'companytown',response.companyTown)
-      _that.$set(_that.form,'companycountry',response.companyCountry)
-      _that.$set(_that.form,'status',response.status)
-            for(let index = 0; index < _that.clientList.length; index++){
-              if (_that.clientList[index].id == response.address.billingid){
-                _that.$set(_that.form,'billing',index)
+            _that.$set(_that.form, 'date', response.data.invoiceDate)
+            _that.$set(_that.form, 'dueDate', response.data.dueDate)
+            _that.$set(_that.form, 'companyname', response.data.companyName)
+            _that.$set(_that.form, 'companystreetname', response.data.companyStreetName)
+            _that.$set(_that.form, 'companypostalcode', response.data.companyPostalCode)
+            _that.$set(_that.form, 'companytown', response.data.companyTown)
+            _that.$set(_that.form, 'companycountry', response.data.companyCountry)
+            _that.$set(_that.form, 'status', response.data.status)
+            for (let index = 0; index < _that.clientList.length; index++) {
+              if (_that.clientList[index].id == response.data.address.billingid) {
+                _that.$set(_that.form, 'billing', index)
               }
-              if (_that.clientList[index].id == response.address.shippingid){
-                _that.$set(_that.form,'shipping',index)
+              if (_that.clientList[index].id == response.data.address.shippingid) {
+                _that.$set(_that.form, 'shipping', index)
               }
             }
-      _that.$set(_that.form,'salestax',response.address.salesTax)
-      _that.$set(_that,'entityList',response.address.entries)
-      }).catch(function (error){
+            _that.$set(_that.form, 'salestax', response.data.address.salesTax)
+            _that.$set(_that.form, 'paid', response.data.paidAmount)
+            _that.$set(_that, 'entityList', response.data.address.entries)
+            console.log("Edit Inovice")
+            console.log(_that.form)
+          }}).catch(function (error){
         alert("Connect Fail");
         console.log(error)
       })
@@ -413,13 +421,13 @@ export default {
       let billindex = _that.form.billing
       let shipindex = _that.form.shipping
       let filter = _that.$options.filters['formatDate']
-      console.log(filter(_that.form.date))
-      console.log(filter(_that.form.dueDate))
+      console.log(_that.form.date)
+      console.log(_that.form.dueDate)
       let newInvoice = {
-        "invoiceDate": filter(_that.form.date),
-        "dueDate": filter(_that.form.dueDate),
+        "invoiceDate": _that.form.date,
+        "dueDate": _that.form.dueDate,
         "userId": "qwerty",
-        "clientId": _that.clientList[billindex].id,
+        //"clientId": _that.clientList[billindex].id,
         "companyName": _that.form.companyname,
         "companyStreetName": _that.form.companystreetname,
         "companyPostalCode": _that.form.companypostalcode,
@@ -429,20 +437,20 @@ export default {
         "paidAmount": _that.form.paid,
         "status": _that.form.status,
         "address": {
-          "billingFirstName": _that.clientList[billindex].firstName,
-          "billingLastName": _that.clientList[billindex].lastName,
-          "billingStreetName": _that.clientList[billindex].streetName,
-          "billingPostalCode": _that.clientList[billindex].postalCode,
-          "billingTown": _that.clientList[billindex].town,
-          "billingCountry": _that.clientList[billindex].country,
-          "billingid": _that.clientList[billindex].id,
-          "shippingFirstName": _that.clientList[shipindex].firstName,
-          "shippingLastName": _that.clientList[shipindex].lastName,
-          "shippingStreetName": _that.clientList[shipindex].streetName,
-          "shippingPostalCode": _that.clientList[shipindex].postalCode,
-          "shippingTown": _that.clientList[shipindex].town,
-          "shippingCountry": _that.clientList[shipindex].country,
-          "shippingid": _that.clientList[shipindex].id,
+          // "billingFirstName": _that.clientList[billindex].firstName,
+          // "billingLastName": _that.clientList[billindex].lastName,
+          // "billingStreetName": _that.clientList[billindex].streetName,
+          // "billingPostalCode": _that.clientList[billindex].postalCode,
+          // "billingTown": _that.clientList[billindex].town,
+          // "billingCountry": _that.clientList[billindex].country,
+          // "billingid": _that.clientList[billindex].id,
+          // "shippingFirstName": _that.clientList[shipindex].firstName,
+          // "shippingLastName": _that.clientList[shipindex].lastName,
+          // "shippingStreetName": _that.clientList[shipindex].streetName,
+          // "shippingPostalCode": _that.clientList[shipindex].postalCode,
+          // "shippingTown": _that.clientList[shipindex].town,
+          // "shippingCountry": _that.clientList[shipindex].country,
+          // "shippingid": _that.clientList[shipindex].id,
           "salesTax": _that.form.salestax,
           "entries": _that.entityList
         }
@@ -450,10 +458,11 @@ export default {
       let invoiceFlag = localStorage.getItem('invoiceChangeFlag')
       let url = '/api/createInvoice'
       if (invoiceFlag != '-1'){
-        newInvoice.invoiceId = invoiceFlag
-        url = '/api/createInvoice'
+        newInvoice.id = invoiceFlag
+        url = '/api/updateInvoice'
       }
-      console.log("Submit: "+newInvoice)
+      console.log("Submit: ")
+      console.log(newInvoice)
       axios.post(url, newInvoice, {
         headers:{
           'Authorization':"Bearer " + token,
@@ -464,6 +473,7 @@ export default {
         if (response.status == 201) {
           alert("Create Invoice Success");
           console.log(response);
+          _that.$router.push({path: "/InvoiceList"});
         } else {
           alert("Fail, Error: " + response.status);
         }
