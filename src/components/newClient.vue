@@ -9,6 +9,16 @@
           class="login_form"
           :model="form"
         >
+        <el-form-item label="Company Name">
+                <el-select v-model="form.companyName" placeholder="Company Name" @click="handleChange()">
+                  <el-option
+                    v-for="(item, index) in companyList"
+                    :key="index"
+                    :label="item.companyName"
+                    :value="index">
+                  </el-option>
+                </el-select>
+              </el-form-item>
           <el-form-item label="FirstName">
             <el-input
               placeholder="FirstName"
@@ -69,6 +79,16 @@ export default {
   data() {
     return {
       form: {},
+      companyList:[],
+        // {
+        //   compName: "John",
+        //   compId: "Smith"
+        // },
+        // {
+        //   compName: "222",
+        //   compId: "333"
+        // }
+      // ],
     };
   },
   filters: {
@@ -86,12 +106,20 @@ export default {
       let url = "/api/selectClient?clientId="+clientid
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + localStorage.getItem("token");
+
+      const initRequest = axios.get(url);
+      const companyListRequest = axios.get("/api/getAllCompanies");
+
       axios
-        .get(url)
-        .then(function (response) {
-          console.log("Get Client");
-          console.log(response);
-          if (JSON.stringify(response) !== "{}") {
+        .all([initRequest, companyListRequest])
+        .then(
+          axios.spread((...responses) => {
+            const clientResponse = responses[0];
+            const companyListResponse = responses[1];
+            _that.rightsList = [];
+            _that.companyList = companyListResponse.data;
+
+            if (JSON.stringify(clientResponse) !== "{}") {
             //localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
             //console.log(response.data)
       // Mock client
@@ -104,18 +132,38 @@ export default {
       //   town: "New York",
       //   country: "USA",
       // }
-      _that.$set(_that.form,'id',response.data.id)
-      _that.$set(_that.form,'firstName',response.data.firstName)
-      _that.$set(_that.form,'lastName',response.data.lastName)
-      _that.$set(_that.form,'email',response.data.email)
-      _that.$set(_that.form,'streetName',response.data.streetName)
-      _that.$set(_that.form,'postalCode',response.data.postalCode)
-      _that.$set(_that.form,'town',response.data.town)
-      _that.$set(_that.form,'country',response.data.country)
-      }}).catch(function (error){
-        alert("Connect Fail");
-        console.log(error)
+      _that.$set(_that.form,'id',clientResponse.data.id)
+      _that.$set(_that.form,'firstName',clientResponse.data.firstName)
+      _that.$set(_that.form,'lastName',clientResponse.data.lastName)
+      _that.$set(_that.form,'email',clientResponse.data.email)
+      _that.$set(_that.form,'streetName',clientResponse.data.streetName)
+      _that.$set(_that.form,'postalCode',clientResponse.data.postalCode)
+      _that.$set(_that.form,'town',clientResponse.data.town)
+      _that.$set(_that.form,'country',clientResponse.data.country)
+      _that.$set(_that.form,'companyName',clientResponse.data.companyName)
+      }
+
+            // use/access the results
+            console.log(clientResponse, companyListResponse);
+          })
+        )
+        .catch((errors) => {
+          // react on errors.
+          console.error(errors);
+        });
+    } else {
+      let _that = this
+      let token = localStorage.getItem("token");
+    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    axios
+      .get("/api/showAllCompanies")
+      .then(function (response) {
+        console.log(response);
+        _that.companyList = response.data;
       })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
   },
   methods: {
@@ -124,7 +172,8 @@ export default {
       let token = localStorage.getItem('token')
       // let createClient = {'clientName':_that.form.firstname,'industry':_that.form.lastname,'contactNo':_that.form.postcode}
       let createClient = {'firstName':_that.form.firstName,'lastName':_that.form.lastName,'email':_that.form.email,
-        'streetName':_that.form.streetName,'postalCode':_that.form.postalCode,'town':_that.form.town,'country':_that.form.country}
+        'streetName':_that.form.streetName,'postalCode':_that.form.postalCode,'town':_that.form.town,'country':_that.form.country,
+        'companyName':_that.companyList[_that.form.companyName].companyName, 'companyId':_that.companyList[_that.form.companyName].companyId}
       axios.defaults.headers.common['Authorization'] = "Bearer "+token
       let url = '/api/registerClient'
       let clientFlag = localStorage.getItem('clientChangeFlag')
