@@ -442,6 +442,7 @@ export default {
             _that.$set(_that.form, 'invoiceNo', response.data.invoiceNo)
             _that.$set(_that.form, 'date', response.data.invoiceDate)
             _that.$set(_that.form, 'dueDate', response.data.dueDate)
+            _that.$set(_that.form,'clientId',response.data.clientId)
             _that.$set(_that.form, 'companyid', response.data.companyId)
             _that.$set(_that.form, 'companyName', response.data.companyName)
             _that.$set(_that.form, 'companystreetname', response.data.companyStreetName)
@@ -517,7 +518,7 @@ export default {
         "invoiceDate": _that.form.date,
         "dueDate": _that.form.dueDate,
         "userId": "qwerty",
-        //"clientId": _that.clientList[billindex].id,
+        "clientId": _that.form.clientId,
         "companyId": _that.form.companyid,
         "companyName": _that.form.companyName,
         "companyStreetName": _that.form.companystreetname,
@@ -628,6 +629,7 @@ export default {
 
 axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.billing].clientId).then(function(response){
         console.log(response)
+  _that.$set(_that.form,'clientId',response.data.id)
   _that.$set(_that.form,'billingFirstName',response.data.firstName)
   _that.$set(_that.form,'billingLastName',response.data.lastName)
         _that.$set(_that.form,'billingStreetName',response.data.streetName)

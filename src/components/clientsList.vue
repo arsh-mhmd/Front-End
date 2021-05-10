@@ -17,6 +17,7 @@
                       @change.native="getCurrentRow(scope.row)"></el-radio>
           </template>
         </el-table-column>
+        <el-table-column label="ClientId" prop="id"></el-table-column>
         <el-table-column label="FirstName" prop="firstName"></el-table-column>
         <el-table-column label="LastName" prop="lastName"></el-table-column>
         <el-table-column label="Company Name" prop="companyName"></el-table-column>
@@ -50,7 +51,7 @@ export default {
           postalCode: "NY 12210",
           town: "New York",
           country: "USA",
-          clientid:1
+          id:1
         },
         {
           firstName: "222",
@@ -60,7 +61,7 @@ export default {
           postalCode: "NK 34534",
           town: "England",
           country: "OK",
-          clientid: 2
+          id: 2
         },
       ],
       templateSelection:{
