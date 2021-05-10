@@ -64,11 +64,11 @@
           <el-row>
             <el-col :span='9'>
               <el-form-item label="Billing">
-                <el-select v-model="form.billing" placeholder="billing to" @change="handleselectchange()">
+                <el-select v-model="form.billing" placeholder="billing to" @change="handleBillingChange()">
                   <el-option
                     v-for="(item, index) in clientList"
                     :key="index"
-                    :label="item.firstName + ' ' + item.lastName + '    (id)' + item.id"
+                    :label="item.firstName + ' ' + item.lastName"
                     :value="index">
                   </el-option>
                 </el-select>
@@ -76,11 +76,11 @@
             </el-col>
             <el-col :span='9'>
               <el-form-item label="Shipping">
-                <el-select v-model="form.shipping" placeholder="shipping to" @change="handleselectchange()">
+                <el-select v-model="form.shipping" placeholder="shipping to" @change="handleShippingChange()">
                   <el-option
                     v-for="(item, index) in clientList"
                     :key="index"
-                    :label="item.firstName + ' ' + item.lastName + '    (id)' + item.id"
+                    :label="item.firstName + ' ' + item.lastName"
                     :value="index">
                   </el-option>
                 </el-select>
@@ -90,6 +90,84 @@
               <el-button @click="manageClient()">Manage Client</el-button>
             </el-col>
           </el-row>
+
+         <el-row>
+            <el-col :span='4'>
+              <el-form-item label="Billing Street Name" prop="billingStreetName">
+                <el-input
+                  placeholder="Billing Street Name"
+                  v-model="form.billingStreetName"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='4'>
+              <el-form-item label="Billing Town" prop="billingTown">
+                <el-input
+                  placeholder="Billing Town"
+                  v-model="form.billingTown"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='4'>
+              <el-form-item label="Shipping Street Name" prop="shippingStreetName">
+                <el-input
+                  placeholder="Shipping Street Name"
+                  v-model="form.shippingStreetName"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='4'>
+              <el-form-item label="Shipping Town" prop="shippingTown">
+                <el-input
+                  placeholder="Shipping Town"
+                  v-model="form.shippingTown"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row> 
+
+          <el-row>
+            <el-col :span='4'>
+              <el-form-item label="Billing Country" prop="billingCountry">
+                <el-input
+                  placeholder="Billing Country"
+                  v-model="form.billingCountry"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='4'>
+              <el-form-item label="Billing Postal Code" prop="billingPostalCode">
+                <el-input
+                  placeholder="Billing Postal Code"
+                  v-model="form.billingPostalCode"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='4'>
+              <el-form-item label="Shipping Country" prop="shippingCountry">
+                <el-input
+                  placeholder="Shipping Country"
+                  v-model="form.shippingCountry"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='4'>
+              <el-form-item label="Shipping Postal Code" prop="shippingPostalCode">
+                <el-input
+                  placeholder="Shipping Postal Code"
+                  v-model="form.shippingPostalCode"
+                  style="width: 200px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row> 
           <!--selector-->
           <el-row>
             <el-col :span='9'>
@@ -462,19 +540,19 @@ export default {
         "paidAmount": _that.form.paid,
         "status": _that.form.status,
         "address": {
-          // "billingFirstName": _that.clientList[billindex].firstName,
-          // "billingLastName": _that.clientList[billindex].lastName,
-          // "billingStreetName": _that.clientList[billindex].streetName,
-          // "billingPostalCode": _that.clientList[billindex].postalCode,
-          // "billingTown": _that.clientList[billindex].town,
-          // "billingCountry": _that.clientList[billindex].country,
+          "billingFirstName": _that.clientList[_that.form.billing].firstName,
+          "billingLastName": _that.clientList[_that.form.billing].lastName,
+          "billingStreetName": _that.clientList[_that.form.billing].streetName,
+          "billingPostalCode": _that.clientList[_that.form.billing].postalCode,
+          "billingTown": _that.clientList[_that.form.billing].town,
+          "billingCountry": _that.clientList[_that.form.billing].country,
           // "billingid": _that.clientList[billindex].id,
-          // "shippingFirstName": _that.clientList[shipindex].firstName,
-          // "shippingLastName": _that.clientList[shipindex].lastName,
-          // "shippingStreetName": _that.clientList[shipindex].streetName,
-          // "shippingPostalCode": _that.clientList[shipindex].postalCode,
-          // "shippingTown": _that.clientList[shipindex].town,
-          // "shippingCountry": _that.clientList[shipindex].country,
+          "shippingFirstName": _that.clientList[_that.form.shipping].firstName,
+          "shippingLastName": _that.clientList[_that.form.shipping].lastName,
+          "shippingStreetName": _that.clientList[_that.form.shipping].streetName,
+          "shippingPostalCode": _that.clientList[_that.form.shipping].postalCode,
+          "shippingTown": _that.clientList[_that.form.shipping].town,
+          "shippingCountry": _that.clientList[_that.form.shipping].country,
           // "shippingid": _that.clientList[shipindex].id,
           "salesTax": _that.form.salestax,
           "entries": _that.entityList
@@ -512,16 +590,11 @@ export default {
       console.log(_that.form.shipping)
       this.$router.push({path: "/invoiceList"});
     },
-    handleselectchange(){
-      let _that = this
-      this.$forceUpdate()
-      console.log(_that.form.billing)
-      console.log(_that.form.shipping)
-    },
     handleCompanyChange(){
       let _that = this
       this.$forceUpdate()
-    let token = localStorage.getItem('token')
+
+      let token = localStorage.getItem('token')
     axios.defaults.headers.common['Authorization'] = "Bearer "+token
 
     const clientRequest = axios.get(
@@ -534,7 +607,7 @@ export default {
           axios.spread((...responses) => {
             const clientResponse = responses[0];
             const companyResponse = responses[1];
-           
+           _that.clientList = []
             _that.clientList = clientResponse.data;
 
             _that.$set(_that.form,'companystreetname',companyResponse.data.companyStreetName)
@@ -549,6 +622,46 @@ export default {
           // react on errors.
           console.error(errors);
         });
+    },
+    handleselectchange(){
+      let _that = this
+      this.$forceUpdate()
+      console.log(_that.form.billing)
+      console.log(_that.form.shipping)
+    },
+    handleBillingChange(){
+      let _that = this
+      this.$forceUpdate()
+    let token = localStorage.getItem('token')
+    axios.defaults.headers.common['Authorization'] = "Bearer "+token
+
+axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.billing].clientId).then(function(response){
+        console.log(response)
+        _that.$set(_that.form,'billingStreetName',response.data.streetName)
+      _that.$set(_that.form,'billingTown',response.data.town)
+      _that.$set(_that.form,'billingCountry',response.data.country)
+      _that.$set(_that.form,'billingPostalCode',response.data.postalCode)
+      }).catch(function (error){
+        console.log(error)
+      })
+      
+    },
+    handleShippingChange(){
+      let _that = this
+      this.$forceUpdate()
+    let token = localStorage.getItem('token')
+    axios.defaults.headers.common['Authorization'] = "Bearer "+token
+
+axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.shipping].clientId).then(function(response){
+        console.log(response)
+        _that.$set(_that.form,'shippingStreetName',response.data.streetName)
+      _that.$set(_that.form,'shippingTown',response.data.town)
+      _that.$set(_that.form,'shippingCountry',response.data.country)
+      _that.$set(_that.form,'shippingPostalCode',response.data.postalCode)
+      }).catch(function (error){
+        console.log(error)
+      })
+      
     },
     newEntity(){
       let _that = this
