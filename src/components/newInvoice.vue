@@ -128,7 +128,7 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-          </el-row> 
+          </el-row>
 
           <el-row>
             <el-col :span='4'>
@@ -167,7 +167,7 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-          </el-row> 
+          </el-row>
           <!--selector-->
           <el-row>
             <el-col :span='9'>
@@ -193,7 +193,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          
+
 <!--          status-->
           <el-row>
               <el-col :span='6'>
@@ -439,73 +439,62 @@ export default {
           console.log(response);
           if (JSON.stringify(response) !== "{}") {
             console.log(response)
-// Mock Invoice response
-//         _that.form.billing = "56666"
-//         _that.form.status = 'Unpaid'
-//       let response = {
-//         "invoiceId": "10",
-//         "invoiceDate": "12-04-2021",
-//         "dueDate": "12-05-2021",
-//         "userId": "qwerty",
-//         "companyName": "East Repair Inc.",
-//         "companyStreetName": "1912 Harvest Lane",
-//         "companyPostalCode": "NY 12210",
-//         "companyTown": "New York",
-//         "companyCountry": "USA",
-//         "status": "Awaiting Payment",
-//         "address": {
-//         "billingFirstName": "John",
-//           "billingLastName": "Smith",
-//           "billingStreetName": "2 Court Square",
-//           "billingPostalCode": "NY 12210",
-//           "billingTown": "New York",
-//           "billingCountry": "USA",
-//           "billingid":"2",
-//           "shippingFirstName": "John",
-//           "shippingLastName": "Smith",
-//           "shippingStreetName": "3787 Pineview Drive",
-//           "shippingPostalCode": "MA 12210",
-//           "shippingTown": "Cambridge",
-//           "shippingCountry": "UK",
-//           "shippingid":"1",
-//           "salesTax": "6.25",
-//           "entries" : [{
-//           "productName":"Front and rear bracke cables",
-//           "quantity":"1",
-//           "price":"100"
-//         }, {
-//           "productName":"New set of pedal arms",
-//           "quantity":"2",
-//           "price":"15"
-//         }, {
-//           "productName":"Labor 3hrs",
-//           "quantity":"3",
-//           "price":"5"
-//             }]
-//           }
-//         }
-// console.log(response)
+            _that.$set(_that.form, 'invoiceNo', response.data.invoiceNo)
             _that.$set(_that.form, 'date', response.data.invoiceDate)
             _that.$set(_that.form, 'dueDate', response.data.dueDate)
-            _that.$set(_that.form, 'companyname', response.data.companyName)
+            _that.$set(_that.form,'clientId',response.data.clientId)
+            _that.$set(_that.form, 'companyid', response.data.companyId)
+            _that.$set(_that.form, 'companyName', response.data.companyName)
             _that.$set(_that.form, 'companystreetname', response.data.companyStreetName)
             _that.$set(_that.form, 'companypostalcode', response.data.companyPostalCode)
             _that.$set(_that.form, 'companytown', response.data.companyTown)
             _that.$set(_that.form, 'companycountry', response.data.companyCountry)
             _that.$set(_that.form, 'status', response.data.status)
-            for (let index = 0; index < _that.clientList.length; index++) {
-              if (_that.clientList[index].id == response.data.address.billingid) {
-                _that.$set(_that.form, 'billing', index)
-              }
-              if (_that.clientList[index].id == response.data.address.shippingid) {
-                _that.$set(_that.form, 'shipping', index)
-              }
-            }
             _that.$set(_that.form, 'salestax', response.data.address.salesTax)
             _that.$set(_that.form, 'paid', response.data.paidAmount)
             _that.$set(_that, 'entityList', response.data.address.entries)
+
+
+              _that.$set(_that.form,'billingFirstName',response.data.address.billingFirstName)
+            _that.$set(_that.form,'billingLastName',response.data.address.billingLastName)
+            _that.$set(_that.form,'billingStreetName',response.data.address.billingStreetName)
+            _that.$set(_that.form,'billingTown',response.data.address.billingTown)
+            _that.$set(_that.form,'billingCountry',response.data.address.billingCountry)
+            _that.$set(_that.form,'billingPostalCode',response.data.address.billingPostalCode)
+
+            _that.$set(_that.form,'shippingFirstName',response.data.address.shippingFirstName)
+            _that.$set(_that.form,'shippingLastName',response.data.address.shippingLastName)
+            _that.$set(_that.form,'shippingStreetName',response.data.address.shippingStreetName)
+            _that.$set(_that.form,'shippingTown',response.data.address.shippingTown)
+            _that.$set(_that.form,'shippingCountry',response.data.address.shippingCountry)
+            _that.$set(_that.form,'shippingPostalCode',response.data.address.shippingPostalCode)
+
+            _that.form.billing = response.data.address.billingFirstName + response.data.address.billingLastName
+              _that.form.shipping = response.data.address.shippingFirstName + response.data.address.shippingLastName
+
+            //_that.form.companyName = response.data.companyName
+
             console.log("Edit Inovice")
             console.log(_that.form)
+
+            axios
+              .get('/api/findCompanyByCompanyId?companyId='+response.data.companyId)
+              .then(
+                (responses) => {
+                  const companyResponse = responses;
+                  console.log("Company Get");
+                  console.log(companyResponse);
+                  _that.$set(_that.form,'companystreetname',companyResponse.data.companyStreetName)
+                  _that.$set(_that.form,'companytown',companyResponse.data.companyTown)
+                  _that.$set(_that.form,'companycountry',companyResponse.data.companyCountry)
+                  _that.$set(_that.form,'companypostalcode',companyResponse.data.companyPostalCode)
+                  // use/access the results
+                }
+              )
+              .catch((errors) => {
+                // react on errors.
+                console.error(errors);
+              });
           }}).catch(function (error){
         alert("Connect Fail");
         console.log(error)
@@ -529,30 +518,30 @@ export default {
         "invoiceDate": _that.form.date,
         "dueDate": _that.form.dueDate,
         "userId": "qwerty",
-        //"clientId": _that.clientList[billindex].id,
-        "companyId": _that.companyList[_that.form.companyName].companyId,
-        "companyName": _that.companyList[_that.form.companyName].companyName,
-        "companyStreetName": _that.companyList[_that.form.companyName].companyStreetName,
-        "companyPostalCode": _that.companyList[_that.form.companyName].companyPostalCode,
-        "companyTown": _that.companyList[_that.form.companyName].companyTown,
-        "companyCountry": _that.companyList[_that.form.companyName].companyCountry,
+        "clientId": _that.form.clientId,
+        "companyId": _that.form.companyid,
+        "companyName": _that.form.companyName,
+        "companyStreetName": _that.form.companystreetname,
+        "companyPostalCode": _that.form.companypostalcode,
+        "companyTown": _that.form.companytown,
+        "companyCountry": _that.form.companycountry,
         "dueAmount": _that.totalMount - _that.form.paid,
         "paidAmount": _that.form.paid,
         "status": _that.form.status,
         "address": {
-          "billingFirstName": _that.clientList[_that.form.billing].firstName,
-          "billingLastName": _that.clientList[_that.form.billing].lastName,
-          "billingStreetName": _that.clientList[_that.form.billing].streetName,
-          "billingPostalCode": _that.clientList[_that.form.billing].postalCode,
-          "billingTown": _that.clientList[_that.form.billing].town,
-          "billingCountry": _that.clientList[_that.form.billing].country,
+          "billingFirstName": _that.form.billingFirstName,
+          "billingLastName": _that.form.billingLastName,
+          "billingStreetName": _that.form.billingStreetName,
+          "billingPostalCode": _that.form.billingPostalCode,
+          "billingTown": _that.form.billingTown,
+          "billingCountry": _that.form.billingCountry,
           // "billingid": _that.clientList[billindex].id,
-          "shippingFirstName": _that.clientList[_that.form.shipping].firstName,
-          "shippingLastName": _that.clientList[_that.form.shipping].lastName,
-          "shippingStreetName": _that.clientList[_that.form.shipping].streetName,
-          "shippingPostalCode": _that.clientList[_that.form.shipping].postalCode,
-          "shippingTown": _that.clientList[_that.form.shipping].town,
-          "shippingCountry": _that.clientList[_that.form.shipping].country,
+          "shippingFirstName": _that.form.shippingFirstName,
+          "shippingLastName": _that.form.shippingLastName,
+          "shippingStreetName": _that.form.shippingStreetName,
+          "shippingPostalCode": _that.form.shippingPostalCode,
+          "shippingTown": _that.form.shippingTown,
+          "shippingCountry": _that.form.shippingCountry,
           // "shippingid": _that.clientList[shipindex].id,
           "salesTax": _that.form.salestax,
           "entries": _that.entityList
@@ -562,6 +551,7 @@ export default {
       let url = '/api/createInvoice'
       if (invoiceFlag != '-1'){
         newInvoice.id = invoiceFlag
+        newInvoice.invoiceNo = _that.form.invoiceNo
         url = '/api/updateInvoice'
       }
       console.log("Submit: ")
@@ -607,9 +597,11 @@ export default {
           axios.spread((...responses) => {
             const clientResponse = responses[0];
             const companyResponse = responses[1];
-           _that.clientList = []
-            _that.clientList = clientResponse.data;
+           //_that.clientList = []
+            //_that.clientList = clientResponse.data;
 
+            _that.$set(_that.form,'companyid',companyResponse.data.companyId)
+            _that.$set(_that.form,'companyName',companyResponse.data.companyName)
             _that.$set(_that.form,'companystreetname',companyResponse.data.companyStreetName)
       _that.$set(_that.form,'companytown',companyResponse.data.companyTown)
       _that.$set(_that.form,'companycountry',companyResponse.data.companyCountry)
@@ -637,6 +629,9 @@ export default {
 
 axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.billing].clientId).then(function(response){
         console.log(response)
+  _that.$set(_that.form,'clientId',response.data.id)
+  _that.$set(_that.form,'billingFirstName',response.data.firstName)
+  _that.$set(_that.form,'billingLastName',response.data.lastName)
         _that.$set(_that.form,'billingStreetName',response.data.streetName)
       _that.$set(_that.form,'billingTown',response.data.town)
       _that.$set(_that.form,'billingCountry',response.data.country)
@@ -644,7 +639,7 @@ axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.billing].cli
       }).catch(function (error){
         console.log(error)
       })
-      
+
     },
     handleShippingChange(){
       let _that = this
@@ -654,6 +649,8 @@ axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.billing].cli
 
 axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.shipping].clientId).then(function(response){
         console.log(response)
+  _that.$set(_that.form,'shippingFirstName',response.data.firstName)
+  _that.$set(_that.form,'shippingLastName',response.data.lastName)
         _that.$set(_that.form,'shippingStreetName',response.data.streetName)
       _that.$set(_that.form,'shippingTown',response.data.town)
       _that.$set(_that.form,'shippingCountry',response.data.country)
@@ -661,7 +658,7 @@ axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.shipping].cl
       }).catch(function (error){
         console.log(error)
       })
-      
+
     },
     newEntity(){
       let _that = this

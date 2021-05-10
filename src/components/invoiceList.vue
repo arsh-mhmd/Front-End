@@ -18,6 +18,7 @@
 
       <el-tabs v-model="activeName">
         <el-tab-pane label="All" name="first">
+          <el-button @click="showAllInovice()" type="primary">Show</el-button>
           <el-table :data="invoiceList" stripe fit>
             <el-table-column label="Selection" align="center" width="100">
               <template scope="scope">
@@ -107,7 +108,7 @@
             </div>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="Show by Name" name="third">
+        <el-tab-pane label="Show by Client ID" name="third">
           <el-input
             class="searchBox"
             placeholder="Search"
@@ -287,7 +288,7 @@ export default {
           label:'Draft'
         }
       ],
-      searchStatus: "4",
+      searchStatus: "",
       searchname: "",
       searchdateS: "",
       searchdateE: "",
@@ -327,6 +328,29 @@ export default {
       });
   },
   methods: {
+    showAllInovice(){
+      let _that = this;
+      let role = localStorage.getItem("role");
+      if (role != 0) {
+        _that.deleteable = true;
+      }
+      localStorage.setItem("invoiceChangeFlag", "-1");
+      console.log(_that.deleteable);
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      axios
+        .get("/api/getAllInvoices")
+        .then(function (response) {
+          if (JSON.stringify(response) !== "{}") {
+            //localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
+            //console.log(response.data)
+            _that.invoiceList = response.data;
+          }
+        })
+        .catch(function (error) {
+          alert("Connect Fail");
+        });
+    },
     searchBystatus() {
       let _that = this
       let url = "/api/ownerMod/createReportByStatus?status="+_that.searchStatus
