@@ -519,29 +519,29 @@ export default {
         "dueDate": _that.form.dueDate,
         "userId": "qwerty",
         "clientId": _that.form.clientId,
-        "companyId": _that.form.companyid,
-        "companyName": _that.form.companyName,
-        "companyStreetName": _that.form.companystreetname,
-        "companyPostalCode": _that.form.companypostalcode,
-        "companyTown": _that.form.companytown,
-        "companyCountry": _that.form.companycountry,
-        "dueAmount": _that.totalMount - _that.form.paid,
+        "companyId": _that.companyList[_that.form.companyName].companyId,
+        "companyName": _that.companyList[_that.form.companyName].companyName,
+        "companyStreetName": _that.companyList[_that.form.companyName].companyStreetName,
+        "companyPostalCode": _that.companyList[_that.form.companyName].companyPostalCode,
+        "companyTown": _that.companyList[_that.form.companyName].companyTown,
+        "companyCountry": _that.companyList[_that.form.companyName].companyCountry,
+        "dueAmount": _that.clientList[_that.form.billing].dueAmount,
         "paidAmount": _that.form.paid,
         "status": _that.form.status,
         "address": {
-          "billingFirstName": _that.form.billingFirstName,
-          "billingLastName": _that.form.billingLastName,
-          "billingStreetName": _that.form.billingStreetName,
-          "billingPostalCode": _that.form.billingPostalCode,
-          "billingTown": _that.form.billingTown,
-          "billingCountry": _that.form.billingCountry,
+          "billingFirstName": _that.clientList[_that.form.billing].firstName,
+          "billingLastName": _that.clientList[_that.form.billing].lastName,
+          "billingStreetName": _that.clientList[_that.form.billing].streetName,
+          "billingPostalCode": _that.clientList[_that.form.billing].postalCode,
+          "billingTown": _that.clientList[_that.form.billing].town,
+          "billingCountry": _that.clientList[_that.form.billing].country,
           // "billingid": _that.clientList[billindex].id,
-          "shippingFirstName": _that.form.shippingFirstName,
-          "shippingLastName": _that.form.shippingLastName,
-          "shippingStreetName": _that.form.shippingStreetName,
-          "shippingPostalCode": _that.form.shippingPostalCode,
-          "shippingTown": _that.form.shippingTown,
-          "shippingCountry": _that.form.shippingCountry,
+          "shippingFirstName": _that.clientList[_that.form.shipping].firstName,
+          "shippingLastName": _that.clientList[_that.form.shipping].lastName,
+          "shippingStreetName": _that.clientList[_that.form.shipping].streetName,
+          "shippingPostalCode": _that.clientList[_that.form.shipping].postalCode,
+          "shippingTown": _that.clientList[_that.form.shipping].town,
+          "shippingCountry": _that.clientList[_that.form.shipping].country,
           // "shippingid": _that.clientList[shipindex].id,
           "salesTax": _that.form.salestax,
           "entries": _that.entityList
@@ -597,8 +597,8 @@ export default {
           axios.spread((...responses) => {
             const clientResponse = responses[0];
             const companyResponse = responses[1];
-           //_that.clientList = []
-            //_that.clientList = clientResponse.data;
+           _that.clientList = []
+            _that.clientList = clientResponse.data;
 
             _that.$set(_that.form,'companyid',companyResponse.data.companyId)
             _that.$set(_that.form,'companyName',companyResponse.data.companyName)
