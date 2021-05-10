@@ -1,37 +1,8 @@
 <template>
   <div class="login_container">
     <div class="login_box">
-      <h1>Invoice Management System Login</h1>
-      <el-form
-        ref="loginFormRef"
-        label-width="0"
-        class="login_form"
-        :model="loginForm"
-        :rules="loginFormRules"
-      >
-        <el-form-item prop="user">
-          <el-input
-            placeholder="username"
-            prefix-icon="iconfont icon-user"
-            v-model="loginForm.user"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="pass">
-          <el-input
-            placeholder="password"
-            prefix-icon="iconfont icon-3702mima"
-            show-password
-            v-model="loginForm.pass"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <i  style="cursor: pointer;" @click="goRegister" class="el-icon-warning mr10"></i>
-          <span  style="cursor: pointer;" @click="goRegister">Not a member? Register</span>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="login" type="primary" round>GO</el-button>
-        </el-form-item>
-      </el-form>
+      <h1>Payment Cancelled</h1>
+      
     </div>
   </div>
 </template>
