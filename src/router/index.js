@@ -12,6 +12,8 @@ import NewManager from "../components/newManager.vue";
 import UserProfile from "../components/userProfile.vue";
 import CompanyList from "../components/companyList.vue";
 import NewCompany from "../components/newCompany.vue";
+import Success from "../components/success.vue";
+import Cancel from "../components/cancel.vue";
 
 import ManagerPage from "../components/ManagerPage.vue";
 
@@ -23,7 +25,21 @@ const routes = [
     path: "/",
     redirect: "/login"
   },
-
+  {
+    name:'success',
+    path: "/",
+    redirect: "/success"
+  },
+  {
+    name:'success',
+    path: "/success",
+    component: Success
+  },
+  {
+    name:'cancel',
+    path: "/cancel",
+    component: Cancel
+  },
   {
     name:'login',
     path: "/login",
