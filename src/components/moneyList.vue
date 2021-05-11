@@ -35,8 +35,12 @@ export default {
     },
   },
   created() {
-
-    console.log(localStorage.getItem('token'))
+    let tokenitem = localStorage.getItem('token')
+    console.log(tokenitem)
+    if(tokenitem == null){
+      console.log("No token get")
+      this.$router.push({path: "/login"});
+    }
   },
   mounted(){
     this.$nextTick(() => {
