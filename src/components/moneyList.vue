@@ -35,13 +35,26 @@ export default {
     },
   },
   created() {
+    let tokenitem = localStorage.getItem('token')
+    console.log(tokenitem)
+    let useritem = localStorage.getItem('loginUser')
+    console.log(useritem)
+    if(tokenitem == null){
+      this.$router.push({path: "/login"});
+    } else {
+      this.$nextTick(() => {
+        this.drawLine1();
+        this.drawLine2();
+        this.drawLine3();
+      });
+    }
   },
   mounted(){
-    this.$nextTick(() => {
-      this.drawLine1();
-      this.drawLine2();
-      this.drawLine3();
-    });
+    // this.$nextTick(() => {
+    //   this.drawLine1();
+    //   this.drawLine2();
+    //   this.drawLine3();
+    // });
   },
    methods: {
     drawLine1() {

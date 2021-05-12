@@ -62,6 +62,8 @@ export default {
   created(){
     let tokenitem = localStorage.getItem('token')
     console.log(tokenitem)
+    let useritem = localStorage.getItem('loginUser')
+    console.log(useritem)
     if(tokenitem != null){
       this.$router.push({path: "/moneyList"});
     }
@@ -79,12 +81,12 @@ export default {
         localStorage.setItem('loginUser',_that.loginForm.user)
         localStorage.setItem('role',response.role)
         console.log("This is a "+ response.role)
+        _that.$router.push({path: "/moneyList"});
         // request register interface
       }).catch(function (error){
         alert("Connect Fail");
         console.log(error)
       })
-      this.$router.push({path: "/moneyList",query: {role: this.loginForm.role}});
     },
     goRegister(){
       this.$router.push({path: "/register"});
