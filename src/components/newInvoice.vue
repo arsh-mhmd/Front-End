@@ -245,7 +245,7 @@
           style="width: 100%">
           <el-table-column
             fixed
-            prop="productname"
+            prop="productName"
             label="ProductName"
             width="150">
           </el-table-column>
@@ -291,7 +291,7 @@
         <el-form-item label="ProductName">
           <el-input
             placeholder="ProductName"
-            v-model="tempEntity.productname"
+            v-model="tempEntity.productName"
             style="width: 200px"
           ></el-input>
         </el-form-item>
@@ -377,7 +377,7 @@ export default {
       itemwindowvisible:false,
       newEntityFlag:false,
       tempEntity:{
-        productname:"",
+        productName:"",
         quantity:"",
         price:"",
         index:""
@@ -654,7 +654,7 @@ axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.shipping].cl
     },
     newEntity(){
       let _that = this
-      _that.tempEntity.productname = ""
+      _that.tempEntity.productName = ""
       _that.tempEntity.quantity = ""
       _that.tempEntity.price = ""
       _that.tempEntity.index = ""
@@ -663,7 +663,7 @@ axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.shipping].cl
     },
     modifyEntity(row, index){
       let _that = this
-      _that.tempEntity.productname = row.productname
+      _that.tempEntity.productName = row.productName
       _that.tempEntity.quantity = row.quantity
       _that.tempEntity.price = row.price
       _that.tempEntity.index = index
@@ -673,7 +673,7 @@ axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.shipping].cl
     confirmEntity(){
       let _that = this
       const newEneityItem = new Object()
-      newEneityItem.productname = _that.tempEntity.productname
+      newEneityItem.productName = _that.tempEntity.productName
       newEneityItem.quantity = _that.tempEntity.quantity
       newEneityItem.price = _that.tempEntity.price
       if(_that.newEntityFlag == true){
