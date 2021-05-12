@@ -44,7 +44,7 @@
             ></el-table-column>
             <el-table-column
               label=""
-              prop="address.shippingLastName"
+              prop="address.billingLastName"
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
@@ -96,7 +96,7 @@
             ></el-table-column>
             <el-table-column
               label=""
-              prop="address.shippingLastName"
+              prop="address.billingLastName"
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
@@ -142,7 +142,7 @@
             ></el-table-column>
             <el-table-column
               label=""
-              prop="address.shippingLastName"
+              prop="address.billingLastName"
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
@@ -186,7 +186,7 @@
             ></el-table-column>
             <el-table-column
               label=""
-              prop="address.shippingLastName"
+              prop="address.billingLastName"
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>

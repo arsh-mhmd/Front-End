@@ -373,18 +373,7 @@ export default {
           id:2
         }
       ],
-      entityList:[
-        {
-          productname:"apple",
-          quantity:"2",
-          price:"3"
-        },
-        {
-          productname:"pen",
-          quantity:"5",
-          price:"1"
-        }
-      ],
+      entityList: [],
       itemwindowvisible:false,
       newEntityFlag:false,
       tempEntity:{
@@ -444,15 +433,20 @@ export default {
             _that.$set(_that.form, 'dueDate', response.data.dueDate)
             _that.$set(_that.form,'clientId',response.data.clientId)
             _that.$set(_that.form, 'companyid', response.data.companyId)
-            _that.$set(_that.form, 'companyName', response.data.companyName)
             _that.$set(_that.form, 'companystreetname', response.data.companyStreetName)
             _that.$set(_that.form, 'companypostalcode', response.data.companyPostalCode)
             _that.$set(_that.form, 'companytown', response.data.companyTown)
             _that.$set(_that.form, 'companycountry', response.data.companyCountry)
+            _that.$set(_that.form, 'companyName', response.data.companyName)
             _that.$set(_that.form, 'status', response.data.status)
             _that.$set(_that.form, 'salestax', response.data.address.salesTax)
             _that.$set(_that.form, 'paid', response.data.paidAmount)
             _that.$set(_that, 'entityList', response.data.address.entries)
+
+            _that.totalMount = 0
+            _that.entityList.forEach((item)=>{
+              _that.totalMount += item.price * item.quantity
+            })
 
 
               _that.$set(_that.form,'billingFirstName',response.data.address.billingFirstName)
@@ -477,33 +471,29 @@ export default {
             console.log("Edit Inovice")
             console.log(_that.form)
 
-            axios
-              .get('/api/findCompanyByCompanyId?companyId='+response.data.companyId)
-              .then(
-                (responses) => {
-                  const companyResponse = responses;
-                  console.log("Company Get");
-                  console.log(companyResponse);
-                  _that.$set(_that.form,'companystreetname',companyResponse.data.companyStreetName)
-                  _that.$set(_that.form,'companytown',companyResponse.data.companyTown)
-                  _that.$set(_that.form,'companycountry',companyResponse.data.companyCountry)
-                  _that.$set(_that.form,'companypostalcode',companyResponse.data.companyPostalCode)
-                  // use/access the results
-                }
-              )
-              .catch((errors) => {
-                // react on errors.
-                console.error(errors);
-              });
+            // axios
+            //   .get('/api/findCompanyByCompanyId?companyId='+response.data.companyId)
+            //   .then(
+            //     (responses) => {
+            //       const companyResponse = responses;
+            //       console.log("Company Get");
+            //       console.log(companyResponse);
+            //       _that.$set(_that.form,'companystreetname',companyResponse.data.companyStreetName)
+            //       _that.$set(_that.form,'companytown',companyResponse.data.companyTown)
+            //       _that.$set(_that.form,'companycountry',companyResponse.data.companyCountry)
+            //       _that.$set(_that.form,'companypostalcode',companyResponse.data.companyPostalCode)
+            //       // use/access the results
+            //     }
+            //   )
+            //   .catch((errors) => {
+            //     // react on errors.
+            //     console.error(errors);
+            //   });
           }}).catch(function (error){
         alert("Connect Fail");
         console.log(error)
       })
     }
-      _that.totalMount = 0
-      _that.entityList.forEach((item)=>{
-        _that.totalMount += item.price * item.quantity
-      })
   },
   methods: {
     submit() {

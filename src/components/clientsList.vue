@@ -20,7 +20,7 @@
         <el-table-column label="ClientId" prop="id"></el-table-column>
         <el-table-column label="FirstName" prop="firstName"></el-table-column>
         <el-table-column label="LastName" prop="lastName"></el-table-column>
-        <el-table-column label="Company Name" prop="companyName"></el-table-column>
+<!--        <el-table-column label="Company Name" prop="companyName"></el-table-column>-->
         <el-table-column label="Email" prop="email"></el-table-column>
         <el-table-column label="StreetName" prop="streetName"></el-table-column>
         <el-table-column label="PostalCode" prop="postalCode"></el-table-column>

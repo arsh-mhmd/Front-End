@@ -2,7 +2,7 @@
   <div class="login_container">
     <div class="login_box">
       <h1>Payment Success</h1>
-      
+
     </div>
   </div>
 </template>
@@ -31,11 +31,6 @@ export default {
     };
   },
   created(){
-    let tokenitem = localStorage.getItem('token')
-    console.log(tokenitem)
-    if(tokenitem != null){
-      this.$router.push({path: "/moneyList"});
-    }
   },
   methods: {
     login(){
