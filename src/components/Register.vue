@@ -97,6 +97,7 @@ export default {
         axios.defaults.headers.common['Authorization'] = "Bearer "+token
         axios.post('/api/ownerMod/createUser',createClient).then(function (response){
           // this function should appear in log in page
+          localStorage.setItem('loginUser',_that.loginForm.user)
 
         }).catch(function (error){
           console.log(error)

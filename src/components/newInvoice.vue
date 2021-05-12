@@ -198,7 +198,7 @@
           <el-row>
               <el-col :span='6'>
                 <el-form-item label="Status" prop="status">
-                  <el-select v-model="form.status" placeholder="Status" style="width: 200px" @change="handleselectchange()">
+                  <el-select v-model="form.status" disabled placeholder="Status" style="width: 200px" @change="handleselectchange()">
                     <el-option
                     v-for="item in paymentStatus"
                     :key="item.value"
@@ -211,6 +211,7 @@
             <el-col :span='6'>
               <el-form-item label="How Much Paid" prop="paidmount">
                 <el-input
+                  disabled
                   placeholder="How Much Paid"
                   v-model="form.paid"
                   style="width: 150px"
@@ -331,7 +332,10 @@ import axios from "axios";
 export default {
   data() {
     return {
-      form: {},
+      form: {
+        status: 'Awaiting payment',
+        paid: 0
+      },
       companyList:[],
       paymentStatus:[
         {
@@ -439,6 +443,7 @@ export default {
             _that.$set(_that.form, 'companycountry', response.data.companyCountry)
             _that.$set(_that.form, 'companyName', response.data.companyName)
             _that.$set(_that.form, 'status', response.data.status)
+            _that.$set(_that.form, 'createdBy', response.data.createdBy)
             _that.$set(_that.form, 'salestax', response.data.address.salesTax)
             _that.$set(_that.form, 'paid', response.data.paidAmount)
             _that.$set(_that, 'entityList', response.data.address.entries)
@@ -499,6 +504,7 @@ export default {
     submit() {
       const _that = this
       let token = localStorage.getItem('token')
+      let userid =  localStorage.getItem('loginUser')
       let billindex = _that.form.billing
       let shipindex = _that.form.shipping
       let filter = _that.$options.filters['formatDate']
@@ -508,7 +514,6 @@ export default {
       let newInvoice = {
         "invoiceDate": _that.form.date,
         "dueDate": _that.form.dueDate,
-        "userId": "qwerty",
         "clientId": _that.form.clientId,
         "companyId": _that.form.companyid,
         "companyName": _that.form.companyName,
@@ -519,6 +524,7 @@ export default {
         "dueAmount": _that.totalMount - _that.form.paid,
         "paidAmount": _that.form.paid,
         "status": _that.form.status,
+        "createdBy": userid,
         "address": {
           "billingFirstName": _that.form.billingFirstName,
           "billingLastName": _that.form.billingLastName,
@@ -543,6 +549,7 @@ export default {
       let url = '/api/createInvoice'
       if (invoiceFlag != '-1'){
         newInvoice.id = invoiceFlag
+        newInvoice.createdBy = _that.form.createdBy,
         newInvoice.invoiceNo = _that.form.invoiceNo
         url = '/api/updateInvoice'
       }
