@@ -66,7 +66,6 @@ export default {
           authName: "Manage clients",
           children: [
           { id: "01", authName: "Manage clients", path: "clientsList" },
-          { id: "02", authName: "Manage Company", path: "companyList" },
           ]
         },
         {
@@ -75,6 +74,7 @@ export default {
           type:2,
           children: [
           { id: "01", authName: "Manage invoice", path: "invoiceList" },
+          { id: "02", authName: "Manage Quote", path: "quoteList" },
           ]
         },
         {
