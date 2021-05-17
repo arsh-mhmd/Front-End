@@ -39,6 +39,7 @@
 import { formatDate } from "@/plugins/date.js";
 import qs from 'qs';
 import axios from "axios";
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -86,7 +87,8 @@ export default {
       console.log(response)
       _that.rightsList = response.data;
     }).catch(function (error){
-      alert("Connect Fail");
+      // alert("Connect Fail");
+      swal("Connection Failure")
       console.log(error)
     })
   },
@@ -103,7 +105,8 @@ export default {
       let _that = this
       console.log(_that.templateSelection.clientid)
       if(_that.templateSelection.clientid == -1){
-        alert("Please select a client");
+        // alert("Please select a client");
+        swal("Please select a client");
         return
       }
       localStorage.setItem('clientChangeFlag',_that.templateSelection.clientId)
@@ -113,7 +116,8 @@ export default {
     deleteClient(){
       let _that = this;
       if(_that.templateSelection.clientid == -1){
-        alert("Please select a client");
+        // alert("Please select a client");
+        swal("Please select a client");
         return
       }
       let url = "/api/removeClient?clientId="+_that.templateSelection.clientId
@@ -122,16 +126,19 @@ export default {
       axios.defaults.headers.common['Authorization'] = "Bearer "+token
       axios.delete(url).then(function (response){
         console.log(response)
-        alert("Delete Success");
+        // alert("Delete Success");
+        swal("Client Deleted");
         axios.get('/api/showAllClient').then(function (response){
           console.log(response)
           _that.rightsList = response.data;
         }).catch(function (error){
-          alert("Connect Fail");
+          // alert("Connect Fail");
+          swal("Client Deletion Failed, Retry!");
           console.log(error)
         })
       }).catch(function (error){
-        alert("Connect Fail");
+        // alert("Connect Fail")
+        swal("Client Deletion Failed, Retry!");
         console.log(error)
       })
     },

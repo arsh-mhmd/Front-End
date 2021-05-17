@@ -64,6 +64,7 @@
 import { formatDate } from "@/plugins/date.js";
 import axios from "axios";
 import qs from "qs";
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -96,9 +97,11 @@ export default {
           .then(function (response) {
             console.log(response);
             if (response.status == 200) {
-              alert("New Manager Creation Success");
+              swal("New Manager Creation Success");
+              // alert("New Manager Creation Success");
             } else {
-              alert("Fail, Error: " + response.status);
+              swal("Manager Creation Failed");
+              console.log("Fail, Error: " + response.status);
             }
           })
           .catch(function (error) {

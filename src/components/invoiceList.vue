@@ -509,7 +509,14 @@ export default {
       });
     },
     getPDF() {
-      axios.defaults.headers.common["Authorization"] =
+
+      let _that = this;
+      if (_that.templateSelection.id == -1) {
+        alert("Please select an invoice");
+        return;
+      }
+      else {
+        axios.defaults.headers.common["Authorization"] =
         "Bearer "+localStorage.getItem('token');
       console.log(this.templateSelection.invoiceNo);
       axios
@@ -523,6 +530,9 @@ export default {
           document.body.appendChild(link);
           link.click();
         });
+      }
+
+      
     },
 
     sendEmail() {

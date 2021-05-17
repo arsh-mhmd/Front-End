@@ -204,7 +204,6 @@
           <el-form-item label="">
             <el-button @click="submit()" type="primary" >Create</el-button>
             <el-button @click="cancel()" type="primary" >Cancel</el-button>
-            <el-button @click="newEntity()" type="primary" >Preview Quote</el-button>
           </el-form-item>
 
 
@@ -452,11 +451,19 @@ newQuote = {
       }).then(function (response) {
         console.log(response)
         if (response.status == 201) {
-          alert("Create Quote Success");
+          // alert("Create Quote Success");
+          if (quoteFlag != '-1'){ 
+            swal("Quote Updated");
+          } else {
+            swal("Quote Created");
+          }
+          
+          
           console.log(response);
           _that.$router.push({path: "/QuoteList"});
         } else {
-          alert("Fail, Error: " + response.status);
+          swal("Create Quote Failed");
+          console.log("Fail, Error: " + response.status);
         }
       }).catch(function (error) {
         console.log(error)

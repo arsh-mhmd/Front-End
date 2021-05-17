@@ -39,6 +39,7 @@
 <script>
 import qs from 'qs';
 import axios from "axios";
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -84,7 +85,8 @@ export default {
         _that.$router.push({path: "/moneyList"});
         // request register interface
       }).catch(function (error){
-        alert("Connect Fail");
+        // alert("Connect Fail");
+        swal("Username or Password is Wrong");
         console.log(error)
       })
     },

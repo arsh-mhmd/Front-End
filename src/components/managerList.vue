@@ -37,6 +37,7 @@
 import { formatDate } from "@/plugins/date.js";
 import qs from "qs";
 import axios from "axios";
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -93,13 +94,14 @@ export default {
             const fetchResponse = responses[1];
             _that.rightsList = [];
             _that.rightsList = fetchResponse.data;
-
+            swal("Manager Account Removed");
             // use/access the results
             console.log(deleteResponse, fetchResponse);
           })
         )
         .catch((errors) => {
           // react on errors.
+          swal("Manager Account Removal Failed, Retry!");
           console.error(errors);
         });
     },

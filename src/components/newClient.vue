@@ -75,6 +75,7 @@
 import { formatDate } from "@/plugins/date.js";
 import axios from "axios";
 import qs from 'qs';
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -193,10 +194,12 @@ export default {
       axios.post(url,createClient).then(function (response){
         console.log(response)
         if (response.status == 201 || response.status == 200){
-          alert("Client Register Success");
+          // alert("Client Register Success");
+          swal("Client Register Success");
           _that.$router.push({path: "/clientsList"});
         } else {
-          alert("Fail, Error: "+ response.status);
+          console.log("Fail, Error: "+ response.status);
+          swal("Client register Failed, Retry!");
         }
       }).catch(function (error){
         console.log(error)

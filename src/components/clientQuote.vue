@@ -157,6 +157,7 @@
 import { formatDate } from "@/plugins/date.js";
 import qs from 'qs';
 import axios from "axios";
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -329,7 +330,8 @@ export default {
             //     console.error(errors);
             //   });
           }}).catch(function (error){
-        alert("Connect Fail");
+        // alert("Connect Fail");
+        swal("Connection Failure");
         console.log(error)
       })
     }
@@ -355,11 +357,7 @@ export default {
       }
       let invoiceFlag = localStorage.getItem('invoiceChangeFlag')
       let url = '/api/createQuote'
-      if (invoiceFlag != '-1'){
-        newInvoice.id = invoiceFlag
-        newInvoice.invoiceNo = _that.form.invoiceNo
-        url = '/api/updateInvoice'
-      }
+      
       console.log("Submit: ")
       console.log(newQuote)
       axios.post(url, newQuote, {
@@ -370,11 +368,12 @@ export default {
       }).then(function (response) {
         console.log(response)
         if (response.status == 201) {
-          alert("Create Quote Success");
+          // alert("Create Quote Success");
+          // swal
           console.log(response);
           _that.$router.push({path: "/QuoteList"});
         } else {
-          alert("Fail, Error: " + response.status);
+          // alert("Fail, Error: " + response.status);
         }
       }).catch(function (error) {
         console.log(error)
@@ -382,34 +381,44 @@ export default {
     },
     accept() {
       let _that = this
-      _that.newEntityFlag = true
-    _that.itemwindowvisible = true
+      
+      // _that.newEntityFlag = true
+    // _that.itemwindowvisible = true
 
 
       axios
       .get("/api/acceptQuote?quoteNo="+this.$route.query.quoteNo)
       .then(function (response) {
         console.log(response);
+        swal("Quote Accepted");
+        let getWindow = window.open('', '_self');
+      getWindow.close();
         // _that.companyList = response.data;
         
       })
       .catch(function (error) {
+        swal("Quote Accept Failed, Retry!");
         console.log(error);
       });
     },
     decline() {
       let _that = this
-      _that.newEntityFlag = true
-    _that.itemwindowvisible = true
+      // _that.newEntityFlag = true
+    // _that.itemwindowvisible = true
+    
       axios
       .get("/api/declineQuote?quoteNo="+this.$route.query.quoteNo)
       .then(function (response) {
         console.log(response);
+        swal("Quote Declined");
         // _that.companyList = response.data;
+        let getWindow = window.open('', '_self');
+      getWindow.close();
         
       })
       .catch(function (error) {
         console.log(error);
+        swal("Quote Decline Failed, Retry!");
       });
     },
     cancel(){
