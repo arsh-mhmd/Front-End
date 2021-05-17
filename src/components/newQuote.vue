@@ -11,7 +11,7 @@
         >
           <!--client sletor-->
           <el-row>
-            <el-col :span='9'>
+            <el-col :span='6'>
               <el-form-item label="Select Client">
                 <el-select v-model="form.client" placeholder="billing to" @change="handleBillingChange()">
                   <el-option
@@ -35,8 +35,29 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span='6'>
+            <el-col :span='3'>
               <el-button @click="manageClient()">Manage Client</el-button>
+            </el-col>
+            <el-col :span='3'>
+              <el-form-item>
+                <el-input
+                type="hidden"
+                  v-model="form.clientId"
+                  style="width: 150px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            
+            
+            
+            <el-col :span='3'>
+              <el-form-item>
+                <el-input
+                type="hidden"
+                  v-model="form.id"
+                  style="width: 150px"
+                ></el-input>
+              </el-form-item>
             </el-col>
           </el-row>
           <el-row>
@@ -60,6 +81,24 @@
                   format="dd-MM-yyyy"
                   value-format="dd-MM-yyyy">
                 </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span='3'>
+              <el-form-item>
+                <el-input
+                type="hidden"
+                  v-model="form.quoteNo"
+                  style="width: 150px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span='3'>
+              <el-form-item>
+                <el-input
+                type="hidden"
+                  v-model="form.shippingClientId"
+                  style="width: 150px"
+                ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -87,15 +126,24 @@
                 </el-date-picker>
               </el-form-item>
             </el-col>
+            <el-col :span='3'>
+              <el-form-item>
+                <el-input
+                type="hidden"
+                  v-model="form.status"
+                  style="width: 150px"
+                ></el-input>
+              </el-form-item>
+            </el-col>
           </el-row>
 
 <!--          status-->
           <el-row>
             <el-col :span='6'>
-              <el-form-item label="SalesTax" prop="salestax">
+              <el-form-item label="SalesTax" prop="salesTax">
                 <el-input
                   placeholder="SalesTax"
-                  v-model="form.salestax"
+                  v-model="form.salesTax"
                   style="width: 150px"
                 ></el-input>
               </el-form-item>
@@ -267,107 +315,57 @@ export default {
     }
   },
   created() {
+
     let _that = this
-    let token = localStorage.getItem('token')
-
-    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-    axios
-      .get("/api/showAllCompanies")
-      .then(function (response) {
-        console.log(response);
-        _that.companyList = response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-
-    axios.get('/api/showAllClient').then(function (response){
-      console.log(response)
-      _that.clientList = response.data;
-    }).catch(function (error){
-      alert("Connect Fail");
-      console.log(error)
-    })
-
-    let invoiceFlag = localStorage.getItem('invoiceChangeFlag')
-    if (invoiceFlag != '-1'){
+    let quoteFlag = localStorage.getItem('quoteChangeFlag')
+    if (quoteFlag != '-1'){
       //get the client by key id
-      let invoiceid = invoiceFlag;
-      let url = "/api/getInvoice?id="+invoiceid
-      let refilter = _that.$options.filters['reFormatDate']
+      let quoteNo = quoteFlag;
+      let url = "/api/getQuote?quoteNo="+quoteNo
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+
+      //const initRequest = axios.get(url);
+      //const companyListRequest = axios.get("/api/getAllCompanies");
+
       axios
         .get(url)
         .then(function (response) {
-          console.log("Get Inovice");
+          console.log("Get Quote");
           console.log(response);
           if (JSON.stringify(response) !== "{}") {
-            console.log(response)
-            _that.$set(_that.form, 'invoiceNo', response.data.invoiceNo)
-            _that.$set(_that.form, 'date', response.data.invoiceDate)
+            _that.$set(_that.form, 'client', response.data.clientName)
+            _that.$set(_that.form, 'shippingClient', response.data.shippingClientName)
+            _that.$set(_that.form, 'quoteDate', response.data.quoteDate)
             _that.$set(_that.form, 'dueDate', response.data.dueDate)
-            _that.$set(_that.form,'clientId',response.data.clientId)
-            _that.$set(_that.form, 'companyid', response.data.companyId)
-            _that.$set(_that.form, 'companystreetname', response.data.companyStreetName)
-            _that.$set(_that.form, 'companypostalcode', response.data.companyPostalCode)
-            _that.$set(_that.form, 'companytown', response.data.companyTown)
-            _that.$set(_that.form, 'companycountry', response.data.companyCountry)
-            _that.$set(_that.form, 'companyName', response.data.companyName)
-            _that.$set(_that.form, 'status', response.data.status)
-            _that.$set(_that.form, 'salestax', response.data.address.salesTax)
-            _that.$set(_that.form, 'paid', response.data.paidAmount)
-            _that.$set(_that, 'entityList', response.data.address.entries)
-
-            _that.totalMount = 0
+            _that.$set(_that.form, 'shippingDate', response.data.shippingDate)
+            _that.$set(_that.form, 'expDeliveryDate', response.data.expDeliveryDate)
+            _that.$set(_that.form, 'salesTax', response.data.salesTax)
+            _that.$set(_that, 'entityList', response.data.quoteEntries)
+            _that.$set(_that.form, 'id', response.data.id)
+            _that.$set(_that.form, 'clientId', response.data.clientId)
+            _that.$set(_that.form, 'shippingClientId', response.data.shippingClientId)
+             _that.$set(_that.form, 'quoteNo', response.data.quoteNo)
+              _that.$set(_that.form, 'status', response.data.status)
+             _that.totalMount = 0
             _that.entityList.forEach((item)=>{
               _that.totalMount += item.price * item.quantity
             })
+          }
 
+          // use/access the results
+          console.log(clientResponse, companyListResponse);
+             })
 
-              _that.$set(_that.form,'billingFirstName',response.data.address.billingFirstName)
-            _that.$set(_that.form,'billingLastName',response.data.address.billingLastName)
-            _that.$set(_that.form,'billingStreetName',response.data.address.billingStreetName)
-            _that.$set(_that.form,'billingTown',response.data.address.billingTown)
-            _that.$set(_that.form,'billingCountry',response.data.address.billingCountry)
-            _that.$set(_that.form,'billingPostalCode',response.data.address.billingPostalCode)
+        .catch((errors) => {
+          // react on errors.
+          console.error(errors);
+        });
+    }
+    else {
 
-            _that.$set(_that.form,'shippingFirstName',response.data.address.shippingFirstName)
-            _that.$set(_that.form,'shippingLastName',response.data.address.shippingLastName)
-            _that.$set(_that.form,'shippingStreetName',response.data.address.shippingStreetName)
-            _that.$set(_that.form,'shippingTown',response.data.address.shippingTown)
-            _that.$set(_that.form,'shippingCountry',response.data.address.shippingCountry)
-            _that.$set(_that.form,'shippingPostalCode',response.data.address.shippingPostalCode)
+    
 
-            _that.form.billing = response.data.address.billingFirstName + response.data.address.billingLastName
-              _that.form.shipping = response.data.address.shippingFirstName + response.data.address.shippingLastName
-
-            //_that.form.companyName = response.data.companyName
-
-            console.log("Edit Inovice")
-            console.log(_that.form)
-
-            // axios
-            //   .get('/api/findCompanyByCompanyId?companyId='+response.data.companyId)
-            //   .then(
-            //     (responses) => {
-            //       const companyResponse = responses;
-            //       console.log("Company Get");
-            //       console.log(companyResponse);
-            //       _that.$set(_that.form,'companystreetname',companyResponse.data.companyStreetName)
-            //       _that.$set(_that.form,'companytown',companyResponse.data.companyTown)
-            //       _that.$set(_that.form,'companycountry',companyResponse.data.companyCountry)
-            //       _that.$set(_that.form,'companypostalcode',companyResponse.data.companyPostalCode)
-            //       // use/access the results
-            //     }
-            //   )
-            //   .catch((errors) => {
-            //     // react on errors.
-            //     console.error(errors);
-            //   });
-          }}).catch(function (error){
-        alert("Connect Fail");
-        console.log(error)
-      })
     }
   },
   methods: {
@@ -380,7 +378,45 @@ export default {
       console.log("Company")
       console.log(_that.form.companyName)
       console.log(_that.companyList)
-      let newQuote = {
+
+let newQuote = {
+        "clientName": "",
+        "shippingClientName": "",
+        "quoteDate": "",
+        "dueDate": "",
+        "shippingDate": "",
+        "expDeliveryDate": "",
+        "clientId": "",
+        "shippingClientId": "",
+        "salesTax": "",
+        "quoteEntries": "",
+        "quoteNo":"",
+        "id": "",
+        "status": ""
+      }
+
+let url = '/api/createQuote'
+if (quoteFlag != '-1'){
+      url = '/api/updateQuote'
+      newQuote = {
+        "id": _that.form.id,
+        "clientName": _that.form.client,
+        "shippingClientName": _that.form.shippingClient,
+        "quoteDate": _that.form.quoteDate,
+        "dueDate": _that.form.dueDate,
+        "shippingDate": _that.form.shippingDate,
+        "expDeliveryDate": _that.form.expDeliveryDate,
+        "clientId": _that.form.clientId,
+        "shippingClientId": _that.form.shippingClientId,
+        "salesTax": _that.form.salesTax,
+        "quoteEntries": _that.entityList,
+        "status": _that.form.status,
+        "quoteNo": _that.form.quoteNo,
+      }
+
+} 
+else {
+newQuote = {
         "clientName": _that.clientList[_that.form.client].firstName + " " + _that.clientList[_that.form.client].lastName,
         "shippingClientName": _that.clientList[_that.form.shippingClient].firstName + " " + _that.clientList[_that.form.shippingClient].lastName,
         "quoteDate": _that.form.quoteDate,
@@ -389,16 +425,23 @@ export default {
         "expDeliveryDate": _that.form.expDeliveryDate,
         "clientId": _that.clientList[_that.form.client].clientId,
         "shippingClientId": _that.clientList[_that.form.shippingClient].clientId,
-        "salesTax": _that.form.salestax,
+        "salesTax": _that.form.salesTax,
         "quoteEntries": _that.entityList
       }
-      let invoiceFlag = localStorage.getItem('invoiceChangeFlag')
-      let url = '/api/createQuote'
-      if (invoiceFlag != '-1'){
-        newInvoice.id = invoiceFlag
-        newInvoice.invoiceNo = _that.form.invoiceNo
-        url = '/api/updateInvoice'
-      }
+}
+
+
+
+      let quoteFlag = localStorage.getItem('quoteChangeFlag')
+    
+  
+      // let quoteFlag = localStorage.getItem('quoteChangeFlag')
+      
+      // if (quoteFlag != '-1'){
+      //   newQuote.id = quoteFlag
+      //   newQuote.quoteNo = _that.form.quoteNo
+      //   
+      // }
       console.log("Submit: ")
       console.log(newQuote)
       axios.post(url, newQuote, {
@@ -423,7 +466,7 @@ export default {
       let _that = this
       console.log(_that.form.billing)
       console.log(_that.form.shipping)
-      this.$router.push({path: "/invoiceList"});
+      this.$router.push({path: "/quoteList"});
     },
     handleCompanyChange(){
       let _that = this

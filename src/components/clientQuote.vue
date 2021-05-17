@@ -14,6 +14,7 @@
             <el-col :span='9'>
               <el-form-item label="Customer" prop="client">
                 <el-input
+                :disabled="this.disabledField"
                   placeholder="client"
                   v-model="form.client"
                   style="width: 150px"
@@ -23,23 +24,19 @@
             <el-col :span='9'>
               <el-form-item label="Shipping" prop="shippingClient">
                 <el-input
+                :disabled="this.disabledField"
                   placeholder="Shipping Client"
                   v-model="form.shippingClient"
                   style="width: 150px"
                 ></el-input>
               </el-form-item> 
             </el-col>
-            <el-col :span='9'>
-              <el-form-item label="">
-                <el-button @click="accept()" type="primary" >Accept</el-button>
-                <el-button @click="decline()" type="primary" >Decline</el-button>
-              </el-form-item>  
-            </el-col>
           </el-row>
           <el-row>
              <el-col :span='9'>
               <el-form-item label="Date" prop="quoteDate">
                 <el-date-picker
+                :disabled="this.disabledField"
                   v-model="form.quoteDate"
                   type="date"
                   placeholder="Date"
@@ -54,6 +51,7 @@
             <el-col :span='9'>
               <el-form-item label="Shipping Date" prop="shippingDate">
                 <el-date-picker
+                :disabled="this.disabledField"
                   v-model="form.shippingDate"
                   type="date"
                   placeholder="Date"
@@ -65,6 +63,7 @@
             <el-col :span='9'>
               <el-form-item label="Expected Delivery Date" prop="expDeliveryDate">
                 <el-date-picker
+                :disabled="this.disabledField"
                   v-model="form.expDeliveryDate"
                   type="date"
                   placeholder="Due Date"
@@ -80,6 +79,7 @@
             <el-col :span='6'>
               <el-form-item label="SalesTax" prop="salesTax">
                 <el-input
+                :disabled="this.disabledField"
                   placeholder="SalesTax"
                   v-model="form.salesTax"
                   style="width: 150px"
@@ -123,44 +123,28 @@
             </template>
           </el-table-column>
         </el-table>
-          <el-form-item label="">
-            <el-button @click="submit()" type="primary" >Create</el-button>
-            <el-button @click="cancel()" type="primary" >Cancel</el-button>
-            <el-button @click="newEntity()" type="primary" >Preview Quote</el-button>
-          </el-form-item>
+          <!-- <el-col :span='9'> -->
+              <el-form-item label="">
+                <el-button @click="accept()" type="primary" >Accept</el-button>
+                <el-button @click="decline()" type="primary" >Decline</el-button>
+              </el-form-item>  
+            <!-- </el-col> -->
 
 
-      <el-dialog Title="Entity" :visible.sync="itemwindowvisible" width="1000px">
+      <el-dialog Title="Entity" :visible.sync="itemwindowvisible"  class="success_dialog">
+        
+  
         <el-row>
-          <el-col :span='8'>
-        <el-form-item label="ProductName">
-          <el-input
-            placeholder="ProductName"
-            v-model="tempEntity.productName"
-            style="width: 200px"
-          ></el-input>
+          <el-col :span='16'>
+            <el-form-item>
+        <h4 align="centre">{{finishText}}</h4>
         </el-form-item>
           </el-col>
-          <el-col :span='8'>
-        <el-form-item label="Quantity">
-          <el-input
-            placeholder="Quantity"
-            v-model="tempEntity.quantity"
-            style="width: 200px"
-          ></el-input>
-        </el-form-item>
-          </el-col>
-            <el-col :span='8'>
-        <el-form-item label="Price">
-          <el-input
-            placeholder="Price"
-            v-model="tempEntity.price"
-            style="width: 200px"
-          ></el-input>
-        </el-form-item>
-            </el-col>
-        <el-button @click="confirmEntity()" type="primary" plain>Confirm</el-button>
-          <el-button @click="itemwindowvisible = false" type="primary" plain>Cancel</el-button>
+            </el-row>
+        
+        <el-row>
+         
+          <el-button @click=cancel() type="primary" plain style="align:center;">Close</el-button>
         </el-row>
       </el-dialog>
       </el-form>
@@ -176,6 +160,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      finishText: "Response Recorded",
+      disabledField: true,
       form: {},
       companyList:[],
       paymentStatus:[
@@ -395,6 +381,11 @@ export default {
       })
     },
     accept() {
+      let _that = this
+      _that.newEntityFlag = true
+    _that.itemwindowvisible = true
+
+
       axios
       .get("/api/acceptQuote?quoteNo="+this.$route.query.quoteNo)
       .then(function (response) {
@@ -407,6 +398,9 @@ export default {
       });
     },
     decline() {
+      let _that = this
+      _that.newEntityFlag = true
+    _that.itemwindowvisible = true
       axios
       .get("/api/declineQuote?quoteNo="+this.$route.query.quoteNo)
       .then(function (response) {
@@ -420,6 +414,9 @@ export default {
     },
     cancel(){
       let _that = this
+      _that.itemwindowvisible = false
+      let getWindow = window.open('', '_self');
+      getWindow.close();
       console.log(_that.form.billing)
       console.log(_that.form.shipping)
       this.$router.push({path: "/invoiceList"});
@@ -558,4 +555,15 @@ axios.get('/api/selectClient?clientId='+_that.clientList[_that.form.shipping].cl
   .box{
 
   }
+
+  .success_dialog {
+    background-color: #00000080;
+    width : 600px ;
+    height: 500px;
+    align-content: center;
+    position: absolute;
+  top: 20%;
+  left: 35%;
+  }
+  
 </style>
