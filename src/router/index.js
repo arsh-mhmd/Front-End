@@ -17,6 +17,7 @@ import Cancel from "../components/cancel.vue";
 import ClientQuote from "../components/clientQuote.vue"
 
 import ManagerPage from "../components/ManagerPage.vue";
+import PaymentRecord from "@/components/PaymentRecord";
 
 Vue.use(VueRouter);
 
@@ -67,6 +68,7 @@ const routes = [
       { path: "/userProfile", component: UserProfile },
       { path: "/quoteList", component: QuoteList },
       { path: "/newQuote", component: NewQuote },
+      { path: "/paymentRecord", component: PaymentRecord },
     ]
   },
 ];

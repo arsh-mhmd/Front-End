@@ -59,6 +59,7 @@ export default {
           authName: "Track your money",
           children: [
           { id: "01", authName: "Track your money", path: "moneyList" },
+            { id: "02", authName: "Payment record", path: "paymentRecord" },
           ]
         },
         {
