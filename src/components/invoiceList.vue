@@ -13,6 +13,7 @@
           v-bind:disabled="deleteable"
           >Delete</el-button
         >
+        <el-button @click="payInvoice()" type="primary">Pay</el-button>
         <el-button @click="editInvoice()" type="primary">Edit</el-button>
       </div>
 
@@ -228,6 +229,29 @@
         >Cancel</el-button
       >
     </el-dialog>
+
+    <el-dialog
+      title="Pay by cash"
+      :visible.sync="paywindowvisible"
+      width="800px"
+    >
+      <title>Pay by cash</title>
+      <el-row>
+        <label>payment:</label>
+        <el-input
+          placeholder="how many pounds"
+          v-model="payAmount"
+          style="width: 160px; margin: 50px"
+        ></el-input>
+      </el-row>
+
+      <el-button @click="confirmPay()" type="primary" plain
+      >Confirm</el-button
+      >
+      <el-button @click="paywindowvisible = false" type="primary" plain
+      >Cancel</el-button
+      >
+    </el-dialog>
     <!--    dialog-->
   </div>
 </template>
@@ -293,8 +317,10 @@ export default {
       searchdateS: "",
       searchdateE: "",
       emailwindowvisible: false,
+      paywindowvisible: false,
       mailmode: "",
       mailsenddate: "",
+      payAmount: "",
       deleteable: false,
     };
   },
@@ -447,6 +473,27 @@ export default {
       // localStorage.setItem('invoiceChangeFlag','2')
       _that.$router.push({ path: "/newInvoice" });
     },
+
+
+    confirmPay(){
+      let _that = this;
+      _that.emailwindowvisible = false;
+      console.log(this.templateSelection.invoiceNo);
+      if (this.payAmount ==""){
+        alert("please input the money client paid")
+        return
+      }
+      console.log(this.payAmount)
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer "+localStorage.getItem('token');
+      axios
+        .get("/api/payDirectly?invoiceId="+this.templateSelection.invoiceNo+"&paid="+this.payAmount)
+
+        .then((response) => {
+          alert("paid successfully!");
+        });
+    },
+
     //This is the sending email button, selected invoice information can be found in this.templateSelection
     confirmemail() {
       let _that = this;
@@ -532,16 +579,25 @@ export default {
         });
       }
 
-      
+
     },
 
     sendEmail() {
       let _that = this;
-      if (_that.templateSelection.invoiceid == -1) {
+      if (_that.templateSelection.id == -1) {
         alert("Please select an invoice");
         return;
       }
       _that.emailwindowvisible = true;
+    },
+
+    payInvoice() {
+      let _that = this;
+      if (_that.templateSelection.id == -1) {
+        alert("Please select an invoice");
+        return;
+      }
+      _that.paywindowvisible = true;
     },
   },
 };
