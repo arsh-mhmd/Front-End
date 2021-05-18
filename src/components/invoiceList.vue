@@ -418,7 +418,7 @@ export default {
     searchBydata() {
       let _that = this
       let filter = _that.$options.filters['formatDate']
-      let url = "/api/ownerMod/createReportByDate?date="+filter(_that.searchdateS)
+      let url = "/api/ownerMod/createReportByDate?date="+filter(_that.searchdateE)+"&sDate="+filter(_that.searchdateS)
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + localStorage.getItem("token");
       axios
@@ -426,9 +426,10 @@ export default {
         .then(function (response) {
           if (JSON.stringify(response) !== "{}") {
             //localStorage.setItem("allInvoiceList",JSON.stringify(response.data))
-            //console.log(response.data)
             _that.invoiceList = response.data;
-            console.log("Get Invoive by Name");
+            console.log("Get Invoive by Date");
+            console.log(response.data);
+            console.log(url);
           }
         })
         .catch(function (error) {
