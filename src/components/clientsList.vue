@@ -17,7 +17,7 @@
                       @change.native="getCurrentRow(scope.row)"></el-radio>
           </template>
         </el-table-column>
-        <el-table-column label="ClientId" prop="id"></el-table-column>
+        <el-table-column label="ClientId" prop="clientId"></el-table-column>
         <el-table-column label="FirstName" prop="firstName"></el-table-column>
         <el-table-column label="LastName" prop="lastName"></el-table-column>
 <!--        <el-table-column label="Company Name" prop="companyName"></el-table-column>-->
