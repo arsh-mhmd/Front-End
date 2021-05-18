@@ -477,13 +477,12 @@ export default {
 
     confirmPay(){
       let _that = this;
-      _that.emailwindowvisible = false;
+      _that.paywindowvisible = false;
       console.log(this.templateSelection.invoiceNo);
       if (this.payAmount ==""){
         alert("please input the money client paid")
         return
       }
-      console.log(this.payAmount)
       axios.defaults.headers.common["Authorization"] =
         "Bearer "+localStorage.getItem('token');
       axios
@@ -498,8 +497,6 @@ export default {
     confirmemail() {
       let _that = this;
       _that.emailwindowvisible = false;
-      console.log(this.templateSelection.invoiceNo);
-      console.log(this.mailmode);
       if (this.mailmode ==1){
         axios.defaults.headers.common["Authorization"] =
           "Bearer "+localStorage.getItem('token');
