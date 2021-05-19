@@ -49,6 +49,7 @@
 <script>
 import qs from 'qs';
 import axios from "axios";
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -98,10 +99,12 @@ export default {
         axios.post('/api/ownerMod/createUser',createClient).then(function (response){
           // this function should appear in log in page
           localStorage.setItem('loginUser',_that.loginForm.user)
+          swal("User Registered");
 
         }).catch(function (error){
           console.log(error)
-          alert("Connect Fail");
+          swal("User Registration Failed");
+          // alert("Connect Fail");
         })
       }).catch(function (error){
         console.log(error)

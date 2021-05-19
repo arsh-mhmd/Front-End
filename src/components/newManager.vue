@@ -25,6 +25,16 @@
           <el-form-item label="User Name" prop="userName">
             <el-input placeholder="userName" v-model="form.userName"></el-input>
           </el-form-item>
+          <el-form-item label="Select Role" prop="role">
+          <el-select v-model="form.role" placeholder="Role Select">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
           <el-form-item label="Create Password" prop="password">
             <el-input placeholder="password" v-model="form.password"></el-input>
           </el-form-item>
@@ -69,6 +79,17 @@ export default {
   data() {
     return {
       form: {},
+      role:null,
+      options:[
+        {
+          value:'0',
+          label:'Owner'
+        },
+        {
+          value:'1',
+          label:'Manager'
+        }
+      ]
     };
   },
   filters: {
@@ -89,7 +110,7 @@ export default {
           email: _that.form.email,
           userName: _that.form.userName,
           password: _that.form.password,
-          role: "Manager",
+          role: _that.form.role,
         };
         axios.defaults.headers.common["Authorization"] = "Bearer " + token;
         axios
@@ -98,6 +119,7 @@ export default {
             console.log(response);
             if (response.status == 200) {
               swal("New Manager Creation Success");
+              this.$router.push({path: "/managerList"});
               // alert("New Manager Creation Success");
             } else {
               swal("Manager Creation Failed");

@@ -321,7 +321,7 @@ export default {
       mailmode: "",
       mailsenddate: "",
       payAmount: "",
-      deleteable: false,
+      deleteable: true,
     };
   },
   filters: {
@@ -333,9 +333,6 @@ export default {
   created() {
     let _that = this;
     let role = localStorage.getItem("role");
-    if (role != 0) {
-      _that.deleteable = true;
-    }
     localStorage.setItem("invoiceChangeFlag", "-1");
     console.log(_that.deleteable);
     axios.defaults.headers.common["Authorization"] =
@@ -352,6 +349,18 @@ export default {
       .catch(function (error) {
         alert("Connect Fail");
       });
+
+      axios
+      .get("/api/managerSpace/getUserProfile?userName=" +
+          localStorage.getItem("loginUser")
+      )
+      .then(function (response) {
+        console.log(response);
+        role = response.data.role;
+        if (role == 0) {
+      _that.deleteable = false;
+    }
+      })
   },
   methods: {
     showAllInovice(){

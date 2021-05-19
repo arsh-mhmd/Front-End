@@ -45,7 +45,7 @@ export default {
       templateSelection: {},
       radio: "",
       keyword: "",
-      deleteable: false,
+      deleteable: true,
     };
   },
   filters: {
@@ -57,11 +57,25 @@ export default {
   created() {
     let _that = this;
     let role = localStorage.getItem("role");
-    if (role != 0) {
-      _that.deleteable = true;
-    }
+    
     let token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+
+    axios
+      .get("/api/managerSpace/getUserProfile?userName=" +
+          localStorage.getItem("loginUser")
+      )
+      .then(function (response) {
+        console.log(response);
+        role = response.data.role;
+        if (role == 0) {
+      _that.deleteable = false;
+    }
+      })
+      
+    
+    // _that.deleteable = false;
+
     axios
       .get("/api/ownerMod/getManagers")
       .then(function (response) {
