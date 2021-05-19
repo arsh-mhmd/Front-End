@@ -6,9 +6,7 @@
         <el-button @click="deleteManager" type="primary" v-bind:disabled="deleteable"
           >Delete Manager</el-button
         >
-        <el-input class="searchBox" placeholder="Search" v-model="keyword">
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
+      
       </div>
 
       <el-table :data="rightsList" stripe fit>
