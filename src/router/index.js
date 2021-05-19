@@ -10,6 +10,8 @@ import InvoiceList from "../components/invoiceList.vue";
 import ManagerList from "../components/managerList.vue";
 import NewManager from "../components/newManager.vue";
 import UserProfile from "../components/userProfile.vue";
+import CompanyList from "../components/companyList.vue";
+import NewCompany from "../components/newCompany.vue";
 import QuoteList from "../components/quoteList.vue";
 import NewQuote from "../components/newQuote.vue";
 import Success from "../components/success.vue";
@@ -66,6 +68,8 @@ const routes = [
       { path: "/managerList", component: ManagerList },
       { path: "/newManager", component: NewManager },
       { path: "/userProfile", component: UserProfile },
+      { path: "/companyList", component: CompanyList },
+      { path: "/newCompany", component: NewCompany },
       { path: "/quoteList", component: QuoteList },
       { path: "/newQuote", component: NewQuote },
       { path: "/paymentRecord", component: PaymentRecord },

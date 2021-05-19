@@ -67,6 +67,7 @@ export default {
           authName: "Manage clients",
           children: [
           { id: "01", authName: "Manage clients", path: "clientsList" },
+          { id: "02", authName: "Manage Company", path: "companyList" },
           ]
         },
         {
