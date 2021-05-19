@@ -3,7 +3,7 @@
     <el-card>
       <div class="top">
         <el-button @click="goNewManager" type="primary">New Manager</el-button>
-        <el-button @click="deleteManager" type="primary"
+        <el-button @click="deleteManager" type="primary" v-bind:disabled="deleteable"
           >Delete Manager</el-button
         >
         <el-input class="searchBox" placeholder="Search" v-model="keyword">
@@ -45,6 +45,7 @@ export default {
       templateSelection: {},
       radio: "",
       keyword: "",
+      deleteable: false,
     };
   },
   filters: {
@@ -55,6 +56,10 @@ export default {
   },
   created() {
     let _that = this;
+    let role = localStorage.getItem("role");
+    if (role != 0) {
+      _that.deleteable = true;
+    }
     let token = localStorage.getItem("token");
     axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     axios
