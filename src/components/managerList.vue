@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <div class="top">
-        <el-button @click="goNewManager" type="primary">New Manager</el-button>
+        <el-button @click="goNewManager" type="primary" v-bind:disabled="deleteable">New Manager</el-button>
         <el-button @click="deleteManager" type="primary" v-bind:disabled="deleteable"
           >Delete Manager</el-button
         >
