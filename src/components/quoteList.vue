@@ -73,10 +73,12 @@ export default {
   data() {
     return {
       rightsList: [],
-      templateSelection: {},
       radio: "",
       keyword: "",
       itemwindowvisible:false,
+      templateSelection:{
+        quoteNo:-1
+      },
     };
   },
   filters: {
@@ -88,6 +90,7 @@ export default {
   created() {
     let _that = this;
     let token = localStorage.getItem("token");
+    localStorage.setItem('quoteChangeFlag','-1')
     axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     axios
       .get("/api/getAllQuotes")
@@ -110,15 +113,20 @@ export default {
     },
     editQuote(){
       let _that = this
-      console.log(_that.templateSelection.id)
-      if(_that.templateSelection.id == -1){
+      console.log(_that.templateSelection.quoteNo)
+      if(_that.templateSelection.quoteNo == -1){
         // alert("Please select a client");
         swal("Please select a Quote");
         return
       }
-      localStorage.setItem('quoteChangeFlag',_that.templateSelection.id)
+      if(_that.templateSelection.status == "DRAFT" || _that.templateSelection.status == "DECLINED") {
+      localStorage.setItem('quoteChangeFlag',_that.templateSelection.quoteNo)
       // localStorage.setItem('clientChangeFlag','10')
       _that.$router.push({path: "/newQuote"});
+      } 
+      if(_that.templateSelection.status == "ACCEPTED") {
+        swal("Quote already Accepted by "+_that.templateSelection.clientName);
+      }
     },
     deleteQuote() {
       console.log(this.templateSelection.id);
@@ -152,6 +160,7 @@ export default {
     createInvoice(row, index){
       // _that.itemwindowvisible = true
       if(row.status == "ACCEPTED") {
+        row.status = "CREATED";
 let _that = this
       let token = localStorage.getItem("token");
       let url = '/api/convertQuote'
@@ -177,6 +186,9 @@ let _that = this
       }
       if(row.status == "DECLINED") {
         swal("Quote declined by "+row.clientName);
+      }
+      if(row.status == "CREATED") {
+        swal("Invoice already created to "+row.clientName);
       }
     },
     sendMail(row, index){
@@ -205,6 +217,10 @@ let _that = this
 
       if(row.status == "ACCEPTED") {
         swal("Quote accepted by "+row.clientName);
+      }
+
+      if(row.status == "CREATED") {
+        swal("Invoice already Created to this Quote");
       }
 
       if(row.status == "DECLINED") {
