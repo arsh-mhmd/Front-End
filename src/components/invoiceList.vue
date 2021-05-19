@@ -33,19 +33,19 @@
             <el-table-column label="Number" prop="invoiceNo"></el-table-column>
             <el-table-column
               label="Ref"
-              prop="address.shippingFirstName"
-            ></el-table-column>
-            <el-table-column
-              label=""
-              prop="address.shippingLastName"
-            ></el-table-column>
-            <el-table-column
-              label="To"
               prop="address.billingFirstName"
             ></el-table-column>
             <el-table-column
               label=""
               prop="address.billingLastName"
+            ></el-table-column>
+            <el-table-column
+              label="To"
+              prop="address.shippingFirstName"
+            ></el-table-column>
+            <el-table-column
+              label=""
+              prop="address.shippingLastName"
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
@@ -85,19 +85,19 @@
             <el-table-column label="Number" prop="invoiceNo"></el-table-column>
             <el-table-column
               label="Ref"
-              prop="address.shippingFirstName"
-            ></el-table-column>
-            <el-table-column
-              label=""
-              prop="address.shippingLastName"
-            ></el-table-column>
-            <el-table-column
-              label="To"
               prop="address.billingFirstName"
             ></el-table-column>
             <el-table-column
               label=""
               prop="address.billingLastName"
+            ></el-table-column>
+            <el-table-column
+              label="To"
+              prop="address.shippingFirstName"
+            ></el-table-column>
+            <el-table-column
+              label=""
+              prop="address.shippingLastName"
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
@@ -131,19 +131,19 @@
             <el-table-column label="Number" prop="invoiceNo"></el-table-column>
             <el-table-column
               label="Ref"
-              prop="address.shippingFirstName"
-            ></el-table-column>
-            <el-table-column
-              label=""
-              prop="address.shippingLastName"
-            ></el-table-column>
-            <el-table-column
-              label="To"
               prop="address.billingFirstName"
             ></el-table-column>
             <el-table-column
               label=""
               prop="address.billingLastName"
+            ></el-table-column>
+            <el-table-column
+              label="To"
+              prop="address.shippingFirstName"
+            ></el-table-column>
+            <el-table-column
+              label=""
+              prop="address.shippingLastName"
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>
@@ -175,19 +175,19 @@
             <el-table-column label="Number" prop="invoiceNo"></el-table-column>
             <el-table-column
               label="Ref"
-              prop="address.shippingFirstName"
-            ></el-table-column>
-            <el-table-column
-              label=""
-              prop="address.shippingLastName"
-            ></el-table-column>
-            <el-table-column
-              label="To"
               prop="address.billingFirstName"
             ></el-table-column>
             <el-table-column
               label=""
               prop="address.billingLastName"
+            ></el-table-column>
+            <el-table-column
+              label="To"
+              prop="address.shippingFirstName"
+            ></el-table-column>
+            <el-table-column
+              label=""
+              prop="address.shippingLastName"
             ></el-table-column>
             <el-table-column label="Date" prop="invoiceDate"></el-table-column>
             <el-table-column label="Due Date" prop="dueDate"></el-table-column>

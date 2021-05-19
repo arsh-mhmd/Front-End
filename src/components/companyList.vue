@@ -94,7 +94,7 @@ export default {
             const fetchResponse = responses[1];
             _that.rightsList = [];
             _that.rightsList = fetchResponse.data;
-
+            alert("Delete Company Success");
             // use/access the results
             console.log(deleteResponse, fetchResponse);
           })
