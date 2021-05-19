@@ -393,7 +393,7 @@ let newQuote = {
         "id": "",
         "status": ""
       }
-
+ let quoteFlag = localStorage.getItem('quoteChangeFlag')
 let url = '/api/createQuote'
 if (quoteFlag != '-1'){
       url = '/api/updateQuote'
@@ -409,7 +409,7 @@ if (quoteFlag != '-1'){
         "shippingClientId": _that.form.shippingClientId,
         "salesTax": _that.form.salesTax,
         "quoteEntries": _that.entityList,
-        "status": _that.form.status,
+        "status": "DRAFT",
         "quoteNo": _that.form.quoteNo,
       }
 
@@ -429,11 +429,6 @@ newQuote = {
       }
 }
 
-
-
-      let quoteFlag = localStorage.getItem('quoteChangeFlag')
-    
-  
       // let quoteFlag = localStorage.getItem('quoteChangeFlag')
       
       // if (quoteFlag != '-1'){

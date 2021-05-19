@@ -3,12 +3,13 @@
     <el-card>
       <div class="top">
         <el-button @click="goNewQuote" type="primary">Create Quote</el-button>
+        <el-button @click="editQuote" type="primary">Edit Quote</el-button>
         <el-button @click="deleteQuote" type="primary"
           >Delete Quote</el-button
         >
-        <el-input class="searchBox" placeholder="Search" v-model="keyword">
+        <!-- <el-input class="searchBox" placeholder="Search" v-model="keyword">
           <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
+        </el-input> -->
       </div>
 
       <el-table :data="rightsList" stripe fit>
@@ -67,6 +68,7 @@
 import { formatDate } from "@/plugins/date.js";
 import qs from "qs";
 import axios from "axios";
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -106,8 +108,21 @@ export default {
     goNewQuote() {
       this.$router.push({ path: "/newQuote" });
     },
+    editQuote(){
+      let _that = this
+      console.log(_that.templateSelection.id)
+      if(_that.templateSelection.id == -1){
+        // alert("Please select a client");
+        swal("Please select a Quote");
+        return
+      }
+      localStorage.setItem('quoteChangeFlag',_that.templateSelection.id)
+      // localStorage.setItem('clientChangeFlag','10')
+      _that.$router.push({path: "/newQuote"});
+    },
     deleteQuote() {
       console.log(this.templateSelection.id);
+      swal("Do you really want to delete the quote?");
       let _that = this;
       let token = localStorage.getItem("token");
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -136,7 +151,8 @@ export default {
     },
     createInvoice(row, index){
       // _that.itemwindowvisible = true
-      let _that = this
+      if(row.status == "ACCEPTED") {
+let _that = this
       let token = localStorage.getItem("token");
       let url = '/api/convertQuote'
       axios.post(url, row, {
@@ -147,16 +163,26 @@ export default {
       }).then(function (response) {
         console.log(response)
         if (response.status == 201) {
-          alert("Create Invoice Success");
+          // alert("Create Invoice Success");
+          swal("Invoice Created");
           console.log(response);
         } else {
-          alert("Fail, Error: " + response.status);
+          swal("Invoice Creation Failed, Retry!");
+          console.log("Fail, Error: " + response.status);
         }
       })
+      }
+      if(row.status == "DRAFT") {
+        swal("Send Quote to "+row.clientName+" for Verification");
+      }
+      if(row.status == "DECLINED") {
+        swal("Quote declined by "+row.clientName);
+      }
     },
     sendMail(row, index){
       // _that.itemwindowvisible = true
-      let _that = this
+      if(row.status == "DRAFT") {
+        let _that = this
       let token = localStorage.getItem("token");
       let url = '/api/sendQuoteNow?quoteNo='+row.quoteNo
       axios.get(url, {
@@ -167,12 +193,24 @@ export default {
       }).then(function (response) {
         console.log(response)
         if (response.status == 201) {
-          alert("Create Invoice Success");
+          // alert("Create Invoice Success");
+          swal("Quote Sent to "+response.data.clientName);
           console.log(response);
         } else {
-          alert("Fail, Error: " + response.status);
+          swal("Quote Sending Failed, Retry!");
+          // alert("Fail, Error: " + response.status);
         }
       })
+      }
+
+      if(row.status == "ACCEPTED") {
+        swal("Quote accepted by "+row.clientName);
+      }
+
+      if(row.status == "DECLINED") {
+        swal("Quote declined by "+row.clientName);
+      }
+      
     },
     updateDueDate() {
       // let _that = this

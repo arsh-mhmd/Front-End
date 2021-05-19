@@ -41,7 +41,7 @@
           <el-form-item>
             <el-button @click="save" type="primary" round>Save</el-button>
             <el-button @click="changePassword" type="primary" round>Change Password</el-button>
-            <el-button @click="verifyPassword" type="primary" round
+            <el-button :disabled="this.disabled" @click="verifyPassword" type="primary" round
               >Verify Password</el-button>
           </el-form-item>
         </el-form>
@@ -53,6 +53,7 @@
 <script>
 import { formatDate } from "@/plugins/date.js";
 import axios from "axios";
+import swal from 'sweetalert';
 export default {
   data() {
     return {
@@ -116,7 +117,8 @@ export default {
           console.log(response);
           if (response.status == 200) {
              _that.disabledPassword=true;
-            alert("Profile Update Success");
+            // alert("Profile Update Success");
+            swal("Profile Updated");
             _that.$set(_that.form, "firstName", response.data.firstName);
           _that.$set(_that.form, "lastName", response.data.lastName);
           _that.$set(_that.form, "email", response.data.email);
@@ -124,7 +126,8 @@ export default {
           _that.$set(_that.form, "password", response.data.password);
            _that.$set(_that.form, "repassword", "");
           } else {
-            alert("Fail, Error: " + response.status);
+            console.log("Fail, Error: " + response.status);
+            swal("Profile Update Failed, Retry!");
           }
         })
         .catch(function (error) {
@@ -152,13 +155,15 @@ export default {
         .then(function (response) {
           console.log(response);
           if (response.data == true) {
-            alert("Password Verification Success");
+            swal("Password Verification Success");
+            // alert("Password Verification Success");
             _that.disabled=true;
             _that.disabledPassword=false;
             _that.$set(_that.form, "password", "");
             _that.$set(_that.form, "repassword", "");
           } else {
-            alert("Fail, Error: " + response.data);
+            swal("Password Not Matched");
+            // alert("Fail, Error: " + response.data);
           }
         })
         .catch(function (error) {
