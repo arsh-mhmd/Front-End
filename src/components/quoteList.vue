@@ -127,11 +127,20 @@ export default {
       if(_that.templateSelection.status == "ACCEPTED") {
         swal("Quote already Accepted by "+_that.templateSelection.clientName);
       }
+      if(_that.templateSelection.status == "CREATED") {
+        swal("Can't Edit quote, Invoice already created aganist "+_that.templateSelection.clientName);
+      }
     },
     deleteQuote() {
       console.log(this.templateSelection.id);
+      let _that = this
+      console.log(_that.templateSelection.quoteNo)
+      if(_that.templateSelection.quoteNo == -1){
+        // alert("Please select a client");
+        swal("Please select a Quote");
+        return
+      }
       swal("Do you really want to delete the quote?");
-      let _that = this;
       let token = localStorage.getItem("token");
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       const deleteRequest = axios.delete(
@@ -182,10 +191,10 @@ let _that = this
       })
       }
       if(row.status == "DRAFT") {
-        swal("Send Quote to "+row.clientName+" for Verification");
+        swal("Can't create Invoice, Send Quote to "+row.clientName+" for Verification");
       }
       if(row.status == "DECLINED") {
-        swal("Quote declined by "+row.clientName);
+        swal("Can't create Invoice, Quote declined by "+row.clientName);
       }
       if(row.status == "CREATED") {
         swal("Invoice already created to "+row.clientName);
