@@ -317,6 +317,13 @@ export default {
 
     let _that = this
     let quoteFlag = localStorage.getItem('quoteChangeFlag')
+    axios.get('/api/showAllClient').then(function (response){
+      console.log(response)
+      _that.clientList = response.data;
+    }).catch(function (error){
+      alert("Connect Fail");
+      console.log(error)
+    })
     if (quoteFlag != '-1'){
       //get the client by key id
       let quoteNo = quoteFlag;
@@ -428,14 +435,7 @@ newQuote = {
         "quoteEntries": _that.entityList
       }
 }
-
-      // let quoteFlag = localStorage.getItem('quoteChangeFlag')
-      
-      // if (quoteFlag != '-1'){
-      //   newQuote.id = quoteFlag
-      //   newQuote.quoteNo = _that.form.quoteNo
-      //   
-      // }
+    
       console.log("Submit: ")
       console.log(newQuote)
       axios.post(url, newQuote, {
@@ -446,7 +446,6 @@ newQuote = {
       }).then(function (response) {
         console.log(response)
         if (response.status == 201) {
-          // alert("Create Quote Success");
           if (quoteFlag != '-1'){ 
             swal("Quote Updated");
           } else {
@@ -487,8 +486,6 @@ newQuote = {
           axios.spread((...responses) => {
             const clientResponse = responses[0];
             const companyResponse = responses[1];
-           //_that.clientList = []
-            //_that.clientList = clientResponse.data;
 
             _that.$set(_that.form,'companyid',companyResponse.data.companyId)
             _that.$set(_that.form,'companyName',companyResponse.data.companyName)
